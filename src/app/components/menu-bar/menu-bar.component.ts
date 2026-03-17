@@ -1,0 +1,26 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-menubar',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './menu-bar.component.html',
+  styleUrls: ['./menu-bar.component.css']
+})
+export class MenuBarComponent implements OnInit {
+  usuario: any = null;
+  esAdmin = false;
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    const u = localStorage.getItem('usuario');
+    this.usuario = u ? JSON.parse(u) : null;
+    this.esAdmin = this.usuario?.username === 'ruthadeline';
+  }
+
+  go(path: string) { this.router.navigate([path]); }
+  logout() { localStorage.removeItem('usuario'); this.router.navigate(['/']); }
+}

@@ -1,0 +1,29 @@
+<app-menubar></app-menubar>
+
+<div class="slam-container" *ngIf="!completado && preguntas.length > 0">
+  <h1 class="slam-title">{{ preguntas[preguntaActual]?.texto || preguntas[preguntaActual]?.descripcion }}</h1>
+
+  <div class="foto-preview" *ngIf="fotoPreview">
+    <img [src]="fotoPreview" alt="Foto subida" />
+  </div>
+
+  <textarea [(ngModel)]="respuestaActual" placeholder="Escribe tu respuesta..." class="respuesta-box"></textarea>
+
+  <div *ngIf="preguntaActual === 0" class="foto-box">
+    <label class="label-file">Sube tu foto ❤️</label>
+    <input type="file" (change)="onFotoSeleccionada($event)" />
+  </div>
+
+  <div class="botones">
+    <button (click)="anterior()" [disabled]="preguntaActual===0" class="btn-secondary">⬅️ Atrás</button>
+    <button (click)="pasar()" class="btn-tertiary">Pasar</button>
+    <button (click)="siguiente()" class="btn-primary">{{ preguntaActual === preguntas.length-1 ? 'Guardar todo' : 'Continuar ➡️' }}</button>
+  </div>
+
+  <p class="contador">{{ preguntaActual + 1 }} / {{ preguntas.length }}</p>
+</div>
+
+<div *ngIf="completado" class="mensaje-final">
+  <h2>🎉 ¡Gracias por llenar el Slam! 💖</h2>
+  <p>Tus respuestas fueron guardadas.</p>
+</div>
