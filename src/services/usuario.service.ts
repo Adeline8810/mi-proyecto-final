@@ -5,15 +5,18 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
- // private api = 'http://localhost:8080/api/usuarios';
- private api = 'https://backend-cloudv2-production-1443.up.railway.app/api/usuarios/register';
+  // 1. Limpiamos la URL para que sea solo la base de usuarios
+  private api = 'https://backend-cloudv2-production-1443.up.railway.app/api/usuarios';
+
   constructor(private http: HttpClient) {}
 
+  // 2. Ajustamos los endpoints para que no se repitan palabras
   register(u: Usuario): Observable<Usuario> {
     return this.http.post<Usuario>(`${this.api}/register`, u);
   }
 
   login(username: string, password: string): Observable<Usuario> {
+    // Esto ahora irá a .../api/usuarios/login (CORRECTO)
     return this.http.post<Usuario>(`${this.api}/login`, { username, password });
   }
 
