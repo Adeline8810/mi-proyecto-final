@@ -2,14 +2,25 @@
   <h2 class="title">Busca el SLAM de un amigo 🕵️‍♀️</h2>
 
   <div class="search-bar">
-    <input type="text" [(ngModel)]="busquedaNombre" placeholder="Nombre o email...">
-    <button (click)="buscarRespuestas()">Buscar</button>
+    <input
+      type="text"
+      [(ngModel)]="busquedaNombre"
+      placeholder="Escribe un nombre o email..."
+      (keyup.enter)="buscarRespuestas()"> <button (click)="buscarRespuestas()" [disabled]="cargando">
+      {{ cargando ? 'Buscando...' : 'Buscar' }}
+    </button>
   </div>
 
+  <hr>
+
   <div class="resultado-container" *ngIf="respuestasAmigo.length > 0">
-    <div *ngFor="let r of respuestasAmigo" class="pregunta-item">
-      <p class="pregunta-txt">{{ r.pregunta }}</p>
-      <p class="respuesta-txt">{{ r.respuesta }}</p>
+    <div *ngFor="let item of respuestasAmigo" class="pregunta-item">
+      <p class="pregunta-txt">{{ item.pregunta }}</p>
+      <p class="respuesta-txt">{{ item.respuesta }}</p>
     </div>
+  </div>
+
+  <div *ngIf="!cargando && respuestasAmigo.length === 0 && busquedaNombre !== ''" class="no-results">
+    No se encontraron resultados para "{{ busquedaNombre }}"
   </div>
 </div>

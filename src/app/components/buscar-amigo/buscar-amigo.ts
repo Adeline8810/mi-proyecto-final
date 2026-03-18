@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'; //
 import { CommonModule } from '@angular/common'; // Para el ngFor
 import { FormsModule } from '@angular/forms'; // 👈 ESTO ES LO QUE FALTA
+import { TraduccionService } from '../../../services/traduccion.service';
 
 @Component({
   selector: 'app-buscar-amigo',
@@ -11,19 +12,29 @@ import { FormsModule } from '@angular/forms'; // 👈 ESTO ES LO QUE FALTA
 })
 export class BuscarAmigo {
 
-busquedaNombre: string = '';
+  busquedaNombre: string = '';
   respuestasAmigo: any[] = [];
+  cargando: boolean = false;
+  errorBusqueda: string = '';
+  constructor(private miServicio: TraduccionService) { }
 
   // Borra "terminoBusqueda" y "respuestas" si no los usas,
   // usa solo "busquedaNombre" y "respuestasAmigo" para no confundirte.
 
-  buscarRespuestas() {
-    console.log('Buscando a:', this.busquedaNombre);
-    // Simulación de datos para ver el diseño rosa/gris
-    this.respuestasAmigo = [
-      { pregunta: '¿Cuál es tu color favorito?', respuesta: 'El rosado pastel' },
-      { pregunta: '¿Qué música te gusta?', respuesta: 'Pop y baladas' }
-    ];
-  }
+buscarRespuestas() {
+  if (!this.busquedaNombre.trim()) return;
+
+  this.cargando = true;
+  this.miServicio.buscarRespuestasPorAmigo(this.busquedaNombre).subscribe({
+    next: (data) => {
+      this.respuestasAmigo = data; // Aquí llegan las preguntas (rosa) y respuestas (gris)
+      this.cargando = false;
+    },
+    error: (err) => {
+      console.error("Error buscando amigo:", err);
+      this.cargando = false;
+    }
+  });
+}
 
 }

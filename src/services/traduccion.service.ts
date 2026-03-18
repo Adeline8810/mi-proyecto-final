@@ -11,6 +11,8 @@ export class TraduccionService {
   // Tu URL de Railway
   private apiTranslate = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas/traducir';
 
+  private apiBusqueda = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas/buscar-por-nombre';
+
   constructor(private http: HttpClient) { }
 
   traducir(texto: string, target: string): Observable<string> {
@@ -25,4 +27,11 @@ export class TraduccionService {
       map(res => res.traducido)
     );
   }
+
+buscarRespuestasPorAmigo(nombre: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiBusqueda}?nombre=${nombre}`);
+}
+
+
+
 }
