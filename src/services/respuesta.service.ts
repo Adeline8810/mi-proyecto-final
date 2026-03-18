@@ -32,4 +32,11 @@ actualizarRespuestas(respuestas: Respuesta[]): Observable<Respuesta[]> {
     return this.http.get<Respuesta[]>(`${this.api}/usuario/${usuarioId}`);
   }
 
+
+  guardarRespuesta(r: Respuesta): Observable<Respuesta> {
+  // Asegúrate de que apunte a /api/respuestas (sin palabras extra al final)
+  // porque el @PostMapping en Java está en la raíz del controlador
+  return this.http.post<Respuesta>(this.api, r);
+}
+
 }
