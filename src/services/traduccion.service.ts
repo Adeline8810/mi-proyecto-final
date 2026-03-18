@@ -4,17 +4,15 @@ import { Observable, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TraduccionService {
-  // Usamos un espejo público (pueden cambiar si se caen)
-  private apiTranslate = 'https://libretranslate.de/translate';
+  // Tu API de Railway
+  private apiTranslate = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas/traducir';
 
   constructor(private http: HttpClient) {}
 
   traducir(texto: string, target: string): Observable<string> {
-    return this.http.post<any>(this.apiTranslate, {
-      q: texto,
-      source: "es",
-      target: target,
-      format: "text"
-    }).pipe(map(res => res.translatedText));
+    // Llamamos a nuestro propio Java
+    return this.http.get<any>(this.apiTranslate, {
+      params: { texto, target }
+    }).pipe(map(res => res.traducido));
   }
 }
