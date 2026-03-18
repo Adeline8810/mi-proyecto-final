@@ -175,10 +175,11 @@ obtenerTraduccionActual() {
 
   // CAMBIO AQUÍ: Usamos .texto en lugar de .titulo
   this.traduccionService.traducir(pregunta.texto, this.idiomaSeleccionado).subscribe({
-    next: (res: any) => {
-      this.preguntasTraducidas[pregunta.id] = res;
-      this.cargandoTraduccion = false;
-    },
+   next: (res: any) => {
+  // EXTRAEMOS la propiedad 'traducido' que viene del Java
+  this.preguntasTraducidas[pregunta.id] = res.traducido;
+  this.cargandoTraduccion = false;
+},
     error: () => {
       this.cargandoTraduccion = false;
       // CAMBIO AQUÍ TAMBIÉN: Usamos .texto

@@ -17,11 +17,11 @@
 
 <div class="slam-container" *ngIf="!completado && preguntas.length > 0">
   <h1 class="slam-title">
-    {{ idiomaSeleccionado === 'es'
-       ? preguntas[preguntaActual]?.texto
-       : (preguntasTraducidas[preguntas[preguntaActual].id] || preguntas[preguntaActual]?.texto)
-    }}
-  </h1>
+  {{ idiomaSeleccionado === 'es'
+     ? preguntas[preguntaActual]?.texto
+     : (preguntasTraducidas[preguntas[preguntaActual]?.id] || 'Traduciendo...')
+  }}
+</h1>
 
   <p *ngIf="cargandoTraduccion" style="font-size: 0.8rem; color: #888;">Traduciendo... ⏳</p>
 
