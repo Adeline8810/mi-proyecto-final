@@ -109,37 +109,30 @@ export class SlamComponent implements OnInit {
     }
   }
 
-  async guardarTodo() {
+ async guardarTodo() {
+    // 1. IMPORTANTE: Guardar el texto de la última pregunta en el array antes de enviar
+    this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
+
     try {
+      // Manejo de foto (tu código actual está bien)
       if (this.fotoFile) {
-        const fotoUrl = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile));
-        if (this.respuestas[0]) {
-          this.respuestas[0].fotoUrl = fotoUrl;
-        }
+        const url = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile));
+        this.respuestas[this.preguntaActual].fotoUrl = url; // Se la asignamos a la actual
       }
     } catch (err) {
-      console.error('Error subiendo la foto:', err);
-      alert('Error subiendo la foto');
-      return;
+      console.error('Error foto:', err);
     }
 
-    const payload: Respuesta[] = this.respuestas.map(r => ({
-      id: r.id,
-      preguntaId: r.preguntaId,
-      usuarioId: this.usuarioId,
-      texto: r.texto,
-      fotoUrl: r.fotoUrl || null
-    }));
-
-    this.respuestaService.guardarRespuestas(payload).subscribe({
+    // 2. Enviar el payload
+    this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
       next: () => {
         this.completado = true;
-        alert('¡Gracias! Tus respuestas fueron guardadas.');
+        // Opcional: limpiar el storage o redirigir
       },
       error: err => {
-        console.error(err);
-        alert('Error guardando respuestas');
+        console.error('Error 404 o 500:', err);
+        alert('Hubo un error al conectar con el servidor');
       }
     });
-  }
+}
 }

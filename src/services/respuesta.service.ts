@@ -10,10 +10,6 @@ export class RespuestaService {
 
   constructor(private http: HttpClient) {}
 
-guardarRespuestas(respuestas: Respuesta[]): Observable<Respuesta[]> {
-  return this.http.post<Respuesta[]>(`${this.api}/guardar-o-actualizar`, respuestas);
-}
-
  subirFoto(file: File): Observable<string> {
   const fd = new FormData();
   fd.append('file', file);
@@ -33,11 +29,11 @@ actualizarRespuestas(respuestas: Respuesta[]): Observable<Respuesta[]> {
   }
 
 
-    guardarRespuesta(r: Respuesta): Observable<Respuesta> {
-    // Asegúrate de que apunte a /api/respuestas (sin palabras extra al final)
-    // porque el @PostMapping en Java está en la raíz del controlador
-    return this.http.post<Respuesta>(this.api, r);
-  }
+ // ESTE ES EL ÚNICO MÉTODO QUE NECESITAS PARA GUARDAR TODO
+guardarRespuestas(respuestas: Respuesta[]): Observable<Respuesta[]> {
+  // Al enviar la lista a la raíz del API, el nuevo Java inteligente hará el resto
+  return this.http.post<Respuesta[]>(this.api, respuestas);
+}
 
     // En respuesta.service.ts
     guardarOActualizar(r: Respuesta): Observable<Respuesta> {
