@@ -33,10 +33,16 @@ actualizarRespuestas(respuestas: Respuesta[]): Observable<Respuesta[]> {
   }
 
 
-  guardarRespuesta(r: Respuesta): Observable<Respuesta> {
-  // Asegúrate de que apunte a /api/respuestas (sin palabras extra al final)
-  // porque el @PostMapping en Java está en la raíz del controlador
-  return this.http.post<Respuesta>(this.api, r);
-}
+    guardarRespuesta(r: Respuesta): Observable<Respuesta> {
+    // Asegúrate de que apunte a /api/respuestas (sin palabras extra al final)
+    // porque el @PostMapping en Java está en la raíz del controlador
+    return this.http.post<Respuesta>(this.api, r);
+  }
+
+    // En respuesta.service.ts
+    guardarOActualizar(r: Respuesta): Observable<Respuesta> {
+      // Ahora la URL debe terminar en /uno para que coincida con el Java
+      return this.http.post<Respuesta>(`${this.api}/uno`, r);
+    }
 
 }
