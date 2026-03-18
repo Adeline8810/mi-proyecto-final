@@ -169,25 +169,27 @@ cambiarIdioma(lang: string) {
 obtenerTraduccionActual() {
   const pregunta = this.preguntas[this.preguntaActual];
 
+  // Si es español o ya está traducida, no hacemos nada
   if (this.idiomaSeleccionado === 'es' || this.preguntasTraducidas[pregunta.id]) return;
 
   this.cargandoTraduccion = true;
 
-  // CAMBIO AQUÍ: Usamos .texto en lugar de .titulo
+  // Enviamos 'pregunta.texto' y el idioma del combo 'this.idiomaSeleccionado'
   this.traduccionService.traducir(pregunta.texto, this.idiomaSeleccionado).subscribe({
-   next: (res: any) => {
-  // EXTRAEMOS la propiedad 'traducido' que viene del Java
-  this.preguntasTraducidas[pregunta.id] = res.traducido;
-  this.cargandoTraduccion = false;
-},
-    error: () => {
+    next: (textoTraducido: string) => {
+      // Como el Service ya extrajo 'res.traducido', aquí recibimos directamente el string
+      this.preguntasTraducidas[pregunta.id] = textoTraducido;
       this.cargandoTraduccion = false;
-      // CAMBIO AQUÍ TAMBIÉN: Usamos .texto
+      console.log("Traducción exitosa:", textoTraducido);
+    },
+    error: (err) => {
+      console.error("Error al traducir:", err);
+      this.cargandoTraduccion = false;
+      // En caso de error, mostramos el texto original para que no quede vacío
       this.preguntasTraducidas[pregunta.id] = pregunta.texto;
     }
   });
 }
-
 
 
 }
