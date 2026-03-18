@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+// Importamos el nuevo componente que acabas de crear
+import { BuscarAmigo } from './components/buscar-amigo/buscar-amigo';
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin', pathMatch: 'full' },
@@ -23,7 +25,19 @@ const routes: Routes = [
     loadComponent: () =>
       import('./ver-respuestas/ver-respuestas.component').then(m => m.VerRespuestasComponent)
   },
+
+
+  {
+    path: 'buscar-amigo',
+    component: BuscarAmigo
+  },
+
+
   { path: '**', redirectTo: '/admin' }
+
+
+
+
 ];
 
 @NgModule({

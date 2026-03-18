@@ -23,4 +23,10 @@ export class MenuBarComponent implements OnInit {
 
   go(path: string) { this.router.navigate([path]); }
   logout() { localStorage.removeItem('usuario'); this.router.navigate(['/']); }
+
+irABuscarAmigo() {
+  this.router.navigate(['/buscar-amigo']); // Esto redirige a la nueva vista
+}
+
+
 }

@@ -1,0 +1,15 @@
+<div class="search-page">
+  <h2 class="title">Busca el SLAM de un amigo 🕵️‍♀️</h2>
+
+  <div class="search-bar">
+    <input type="text" [(ngModel)]="busquedaNombre" placeholder="Nombre o email...">
+    <button (click)="buscarRespuestas()">Buscar</button>
+  </div>
+
+  <div class="resultado-container" *ngIf="respuestasAmigo.length > 0">
+    <div *ngFor="let r of respuestasAmigo" class="pregunta-item">
+      <p class="pregunta-txt">{{ r.pregunta }}</p>
+      <p class="respuesta-txt">{{ r.respuesta }}</p>
+    </div>
+  </div>
+</div>
