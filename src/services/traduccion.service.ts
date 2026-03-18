@@ -7,6 +7,8 @@ export class TraduccionService {
   // Tu API de Railway
   private apiTranslate = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas/traducir';
 
+
+
   constructor(private http: HttpClient) {}
 
   traducir(texto: string, target: string): Observable<string> {
