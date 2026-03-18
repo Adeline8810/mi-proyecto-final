@@ -6,8 +6,24 @@
   <p>Cuéntanos un poco más sobre ti en este Slam.</p>
 </div>
 
+<div class="idioma-selector">
+  <select (change)="cambiarIdioma($any($event.target).value)">
+    <option value="es">Español 🇪🇸</option>
+    <option value="en">English 🇺🇸</option>
+    <option value="fr">Français 🇫🇷</option>
+    <option value="pt">Português 🇧🇷</option>
+  </select>
+</div>
+
 <div class="slam-container" *ngIf="!completado && preguntas.length > 0">
-  <h1 class="slam-title">{{ preguntas[preguntaActual]?.texto || preguntas[preguntaActual]?.descripcion }}</h1>
+  <h1 class="slam-title">
+    {{ idiomaSeleccionado === 'es'
+       ? preguntas[preguntaActual]?.texto
+       : (preguntasTraducidas[preguntas[preguntaActual].id] || preguntas[preguntaActual]?.texto)
+    }}
+  </h1>
+
+  <p *ngIf="cargandoTraduccion" style="font-size: 0.8rem; color: #888;">Traduciendo... ⏳</p>
 
   <div class="foto-preview" *ngIf="fotoPreview">
     <img [src]="fotoPreview" alt="Foto subida" />

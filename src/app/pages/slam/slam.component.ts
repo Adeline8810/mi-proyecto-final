@@ -7,6 +7,7 @@ import { Pregunta } from '../../../models/pregunta';
 import { Respuesta } from '../../../models/respuesta';
 import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component';
 import { forkJoin, firstValueFrom } from 'rxjs';
+import { TraduccionService } from '../../../services/traduccion.service';
 
 @Component({
   selector: 'app-slam',
@@ -26,7 +27,12 @@ export class SlamComponent implements OnInit {
   usuarioId!: number; // ✅ Ahora siempre será number después de la verificación
   nombreUsuario: string = '';
 
-  constructor(private preguntaService: PreguntaService, private respuestaService: RespuestaService) {}
+  idiomaSeleccionado = 'es';
+  preguntasTraducidas: { [key: number]: string } = {};
+  cargandoTraduccion = false;
+
+  constructor(private preguntaService: PreguntaService, private respuestaService: RespuestaService,
+    private traduccionService: TraduccionService) {}
 
   ngOnInit(): void {
     const u = localStorage.getItem('usuario');
@@ -40,6 +46,8 @@ export class SlamComponent implements OnInit {
     this.nombreUsuario = usuarioObj.nombre;
 
     this.usuarioId = JSON.parse(u).id;
+
+
 
     // ⚡ Cargar preguntas y respuestas existentes en paralelo
     forkJoin({
@@ -92,6 +100,7 @@ export class SlamComponent implements OnInit {
       this.respuestaActual = this.respuestas[this.preguntaActual].texto || '';
       this.fotoPreview = this.respuestas[this.preguntaActual].fotoUrl || null;
     }
+    this.obtenerTraduccionActual();
   }
 
   pasar() {
@@ -116,6 +125,8 @@ export class SlamComponent implements OnInit {
     } else {
       this.guardarTodo();
     }
+
+    this.obtenerTraduccionActual();
   }
 
  async guardarTodo() {
@@ -144,4 +155,38 @@ export class SlamComponent implements OnInit {
       }
     });
 }
+
+
+
+
+// Método para cambiar idioma
+cambiarIdioma(lang: string) {
+  this.idiomaSeleccionado = lang;
+  this.preguntasTraducidas = {}; // Limpiamos caché al cambiar de idioma
+  this.obtenerTraduccionActual();
+}
+
+obtenerTraduccionActual() {
+  const pregunta = this.preguntas[this.preguntaActual];
+
+  if (this.idiomaSeleccionado === 'es' || this.preguntasTraducidas[pregunta.id]) return;
+
+  this.cargandoTraduccion = true;
+
+  // CAMBIO AQUÍ: Usamos .texto en lugar de .titulo
+  this.traduccionService.traducir(pregunta.texto, this.idiomaSeleccionado).subscribe({
+    next: (res: any) => {
+      this.preguntasTraducidas[pregunta.id] = res;
+      this.cargandoTraduccion = false;
+    },
+    error: () => {
+      this.cargandoTraduccion = false;
+      // CAMBIO AQUÍ TAMBIÉN: Usamos .texto
+      this.preguntasTraducidas[pregunta.id] = pregunta.texto;
+    }
+  });
+}
+
+
+
 }
