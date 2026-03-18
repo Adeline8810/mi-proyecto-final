@@ -29,7 +29,7 @@ export class SlamComponent implements OnInit {
   nombreUsuario: string = '';
 
   idiomaSeleccionado = 'es';
-  preguntasTraducidas: { [key: number]: string } = {};
+  preguntasTraducidas: { [key: string]: { [id: number]: string } } = {};
   cargandoTraduccion = false;
 
   cargando: boolean = false;
@@ -203,24 +203,42 @@ cambiarIdioma(lang: string) {
   this.obtenerTraduccionActual();
 }
 
+
+
 obtenerTraduccionActual() {
-    const pregunta = this.preguntas[this.preguntaActual];
-    if (this.idiomaSeleccionado === 'es') return;
-    if (this.preguntasTraducidas[pregunta.id]) return;
+  const pregunta = this.preguntas[this.preguntaActual];
+  const idPregunta = pregunta.id;
+  const lang = this.idiomaSeleccionado;
 
-    this.cargando = true; // 🚀 Empezamos a cargar
-
-    this.traduccionService.traducir(pregunta.texto, this.idiomaSeleccionado).subscribe({
-      next: (res) => {
-        this.preguntasTraducidas[pregunta.id] = res;
-        this.cargando = false; // ✅ Terminamos
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.cargando = false; // ❌ Terminamos aunque falle
-      }
-    });
+  // 1. Si es español, mostramos el original y salimos
+  if (lang === 'es') {
+    this.cargando = false;
+    return;
   }
 
+  // 2. Si YA tenemos esta pregunta en ESTE idioma, no llamamos al servidor
+  if (this.preguntasTraducidas[lang] && this.preguntasTraducidas[lang][idPregunta]) {
+    this.cargando = false;
+    return;
+  }
+
+  // 3. Si no la tenemos, activamos el reloj y pedimos al Backend
+  this.cargando = true;
+  this.traduccionService.traducir(pregunta.texto, lang).subscribe({
+    next: (res) => {
+      // Inicializamos el objeto del idioma si no existe
+      if (!this.preguntasTraducidas[lang]) {
+        this.preguntasTraducidas[lang] = {};
+      }
+      // Guardamos la respuesta (res es el string que viene de Railway)
+      this.preguntasTraducidas[lang][idPregunta] = res;
+      this.cargando = false;
+    },
+    error: (err) => {
+      console.error('Error en Railway:', err);
+      this.cargando = false;
+    }
+  });
+}
 
 }

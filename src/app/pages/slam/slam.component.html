@@ -20,17 +20,19 @@
 </div>
 
 <div class="slam-container" *ngIf="!completado && preguntas.length > 0">
-<div *ngIf="cargando" class="loader-container">
-    <div class="elegant-spinner"></div>
-    <p class="loader-text">Traduciendo para ti...</p>
+<div class="pregunta-box">
+  <div *ngIf="cargando" class="cargando-container">
+    <span class="reloj-icon">⏳</span>
+    <p>Traduciendo al {{ idiomaSeleccionado }}...</p>
   </div>
 
-  <h1 class="slam-title" *ngIf="!cargando">
+  <h1 *ngIf="!cargando" class="slam-title">
     {{ idiomaSeleccionado === 'es'
-        ? preguntas[preguntaActual]?.texto
-        : (preguntasTraducidas[preguntas[preguntaActual]?.id] || '...')
+       ? preguntas[preguntaActual]?.texto
+       : (preguntasTraducidas[idiomaSeleccionado]?.[preguntas[preguntaActual]?.id] || '...')
     }}
   </h1>
+</div>
 
   <div class="foto-preview" *ngIf="fotoPreview">
     <img [src]="fotoPreview" alt="Foto subida" />
