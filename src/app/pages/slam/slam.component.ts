@@ -8,6 +8,7 @@ import { Respuesta } from '../../../models/respuesta';
 import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component';
 import { forkJoin, firstValueFrom } from 'rxjs';
 import { TraduccionService } from '../../../services/traduccion.service';
+import confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-slam',
@@ -109,6 +110,8 @@ export class SlamComponent implements OnInit {
   }
 
   siguiente() {
+
+    this.lanzarChispitas();
     this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
 
     if (this.preguntaActual < this.preguntas.length - 1) {
@@ -128,6 +131,38 @@ export class SlamComponent implements OnInit {
 
     this.obtenerTraduccionActual();
   }
+
+
+lanzarChispitas() {
+    const duration = 2 * 1000; // 2 segundos de chispitas
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      // Colores: Rosa fuerte, Blanco y Rosa pastel (como tu SLAM)
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.8 }, // Salen de la izquierda
+        colors: ['#ff4a68', '#ffffff', '#ffe6eb']
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.8 }, // Salen de la derecha
+        colors: ['#ff4a68', '#ffffff', '#ffe6eb']
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+    frame();
+  }
+
+
+
 
  async guardarTodo() {
     // 1. IMPORTANTE: Guardar el texto de la última pregunta en el array antes de enviar
