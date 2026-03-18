@@ -103,3 +103,32 @@
   transform: scale(1.03); /* Se agranda un poquito suavemente */
   box-shadow: 0 6px 15px rgba(168, 0, 58, 0.4);
 }
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+/* Spinner circular elegante */
+.elegant-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #fff0f5; /* Rosa muy pálido */
+  border-top: 4px solid #d63384; /* Rosa elegante fuerte */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loader-text {
+  color: #7b4f63;
+  font-style: italic;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
