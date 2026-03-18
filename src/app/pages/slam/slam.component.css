@@ -115,3 +115,38 @@ button { padding:10px 16px; border-radius:24px; border:none; cursor:pointer; }
   font-weight: bold;
   outline: none;
 }
+
+/* Contenedor del combo */
+.lang-selector-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+/* El estilo del combo (SELECT) */
+.slam-combobox {
+  background-color: #ffe6eb; /* Rosa pastel suave */
+  color: #d63384; /* Texto rosa fuerte */
+  border: 2px solid #ff4a68;
+  border-radius: 20px;
+  padding: 10px 15px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.slam-combobox:hover {
+  background-color: #ff4a68;
+  color: white;
+}
+
+/* El icono del mundo */
+.lang-label i {
+  color: #ff4a68;
+  font-size: 24px;
+}
