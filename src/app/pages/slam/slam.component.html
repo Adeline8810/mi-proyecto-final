@@ -1,5 +1,11 @@
 <app-menubar></app-menubar>
 
+
+<div class="bienvenida-contenedor" *ngIf="!completado">
+  <h1 class="slam-title">Hola, <span>{{ nombreUsuario }}</span> ✨</h1>
+  <p>Cuéntanos un poco más sobre ti en este Slam.</p>
+</div>
+
 <div class="slam-container" *ngIf="!completado && preguntas.length > 0">
   <h1 class="slam-title">{{ preguntas[preguntaActual]?.texto || preguntas[preguntaActual]?.descripcion }}</h1>
 

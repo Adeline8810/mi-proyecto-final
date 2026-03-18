@@ -35,10 +35,6 @@ guardarRespuestas(respuestas: Respuesta[]): Observable<Respuesta[]> {
   return this.http.post<Respuesta[]>(this.api, respuestas);
 }
 
-    // En respuesta.service.ts
-    guardarOActualizar(r: Respuesta): Observable<Respuesta> {
-      // Ahora la URL debe terminar en /uno para que coincida con el Java
-      return this.http.post<Respuesta>(`${this.api}/uno`, r);
-    }
+
 
 }

@@ -24,6 +24,7 @@ export class SlamComponent implements OnInit {
   fotoPreview: string | null = null;
   completado = false;
   usuarioId!: number; // ✅ Ahora siempre será number después de la verificación
+  nombreUsuario: string = '';
 
   constructor(private preguntaService: PreguntaService, private respuestaService: RespuestaService) {}
 
@@ -33,6 +34,10 @@ export class SlamComponent implements OnInit {
       alert('Debes iniciar sesión');
       return;
     }
+
+    const usuarioObj = JSON.parse(u);
+    this.usuarioId = usuarioObj.id;
+    this.nombreUsuario = usuarioObj.nombre;
 
     this.usuarioId = JSON.parse(u).id;
 
@@ -65,6 +70,10 @@ export class SlamComponent implements OnInit {
       },
       error: err => console.error(err)
     });
+
+
+
+
   }
 
   onFotoSeleccionada(ev: any) {
