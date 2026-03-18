@@ -1,152 +1,105 @@
-.slam-container { max-width:700px; margin:40px auto; padding:24px; background:linear-gradient(#fff6f9,#fff0f4); border-radius:16px; text-align:center; box-shadow:0 10px 30px rgba(255,105,180,0.08); position:relative; }
-.slam-title { font-size:1.4rem; color:#ff4f9a; margin-bottom:10px; transition: transform .25s ease; }
-.slam-title.bounce { transform: translateY(-8px) scale(1.02); }
-.foto-preview img { width:220px; border-radius:12px; box-shadow:0 6px 20px rgba(255,79,154,0.18); margin-bottom:12px; }
-.respuesta-box { width:100%; height:140px; padding:12px; border-radius:12px; border:2px solid #ffd4e3; background:#fff7fc; resize:none; }
-.foto-box { margin:12px 0; }
-.botones { display:flex; justify-content:space-between; gap:10px; margin-top:12px; }
-button { padding:10px 16px; border-radius:24px; border:none; cursor:pointer; }
-.btn-primary { background: linear-gradient(135deg,#ff7ab2,#ff4f9a); color:white; box-shadow:0 6px 18px rgba(255,79,154,0.15); }
-.btn-secondary { background:white; color:#4b2b33; border:1px solid #ffd4e3; }
-.btn-tertiary { background:#ffeef6; color:#4b2b33; }
-.mensaje-final { padding:30px; border-radius:12px; background:linear-gradient(#fff0f6,#fff9fb); }
-.contador { color:#7b3b60; margin-top:8px; }
-.label-file { display:block; margin-bottom:6px; color:#7b3b60; font-weight:600; }
-
-.bienvenida-contenedor {
-  text-align: center;
-  margin-bottom: 20px;
-  animation: fadeIn 1s ease-in;
-}
-
-.slam-title span {
-  color: #ff4081; /* O el color principal de tu app */
-  font-weight: bold;
-  text-transform: capitalize;
-}
-
-.divisor {
-  border: 0;
-  height: 1px;
-  background-image: linear-gradient(to right, transparent, #ccc, transparent);
-  margin-bottom: 20px;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-
-/* Contenedor principal para centrarlo y darle espacio */
+/* =========================================
+   1. CONTENEDOR DEL COMBO DE IDIOMAS
+   (Lo centramos y le damos aire)
+   ========================================= */
 .lang-selector-container {
-  margin-bottom: 25px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
+  margin: 25px 0;
+  font-family: 'Roboto', sans-serif; /* Usamos la fuente que ya tienes */
 }
 
-/* El estilo "vistoso" del combo */
-.slam-combobox {
-  appearance: none; /* Quitamos el estilo nativo de Windows/Mac */
-  padding: 12px 40px 12px 20px;
-  border-radius: 25px; /* Bordes muy redondeados */
-  border: 2px solid #ff4a68; /* El rosa fucsia de tu botón 'Continuar' */
-  background-color: #fff0f5; /* Un rosa pastel súper suave para el fondo */
-  color: #a8003a; /* Un tono vino tinto para el texto */
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+/* Icono del mundo con un rosa suave pero visible */
+.lang-label i {
+  color: #ecb3cb; /* Rosa pastel suave */
+  font-size: 22px;
+}
 
-  /* Icono de flecha personalizada (flecha hacia abajo rosa) */
-  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ff4a68%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.3c0%203%201.1%205.8%203.1%208.2l131.6%20130.6a17.6%2017.6%200%200%200%2025.8%200L293.1%2091.2c2-2.4%203.1-5.2%203.1-8.3%200-4.8-1.8-9.3-5.4-13.5z%22%2F%3E%3C%2F%3E%3C%2Fsvg%22');
+/* =========================================
+   2. EL COMBO (SELECT) ESTILO ELEGANTE
+   ========================================= */
+.slam-combobox {
+  appearance: none; /* Quitamos el estilo feo del navegador */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* Colores elegantes y suaves */
+  background-color: #fff0f5; /* Fondo rosa pastel pálido, súper suave */
+  color: #7b4f63; /* Texto en un tono malva/vino tinto suave, muy legible y elegante */
+  border: 2px solid #ecb3cb; /* Borde rosa suave */
+
+  /* Bordes muy redondeados y espacio interno */
+  border-radius: 30px;
+  padding: 10px 45px 10px 20px; /* Más espacio a la derecha para la flecha */
+
+  /* Tipografía */
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+
+  /* Efectos visuales */
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(236, 179, 203, 0.2); /* Sombra rosa muy tenue */
+  transition: all 0.3s ease; /* Animación suave para los cambios */
+
+  /* Icono de flecha personalizada (flecha hacia abajo rosa elegante) */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ecb3cb%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.3c0%203%201.1%205.8%203.1%208.2l131.6%20130.6a17.6%2017.6%200%200%200%2025.8%200L293.1%2091.2c2-2.4%203.1-5.2%203.1-8.3%200-4.8-1.8-9.3-5.4-13.5z%22%2F%3E%3C%2F%3E%3C%2Fsvg%22');
   background-repeat: no-repeat;
-  background-position: right 15px top 50%;
+  background-position: right 18px top 50%; /* Posición de la flecha */
   background-size: 12px auto;
 }
 
-/* Estilo cuando pasas el mouse por encima (hover) */
+/* Efecto al pasar el mouse por encima (Hover) */
 .slam-combobox:hover {
-  background-color: #ffe6eb;
-  border-color: #ff6f8a;
-  box-shadow: 0 4px 10px rgba(255, 74, 104, 0.2); /* Sombra rosa suave */
+  background-color: #ffe6eb; /* Un rosa un poquito más intenso, pero suave */
+  border-color: #d63384; /* Borde un poco más fuerte para indicar acción */
+  transform: translateY(-1px); /* Pequeña elevación */
+  box-shadow: 0 4px 8px rgba(214, 51, 132, 0.2);
 }
 
-/* Estilo cuando está enfocado */
+/* Efecto cuando el combo está abierto (Focus) */
 .slam-combobox:focus {
-  outline: none;
-  border-color: #ff1f4a;
-  box-shadow: 0 0 0 3px rgba(255, 74, 104, 0.3);
+  border-color: #d63384;
+  box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.15); /* Aro de luz rosa suave */
 }
 
-/* Icono del mundo al lado */
-.lang-label i {
-  color: #ff4a68;
-  font-size: 20px;
+/* Estilo para las opciones dentro del combo (No siempre funciona en todos los navegadores) */
+.slam-combobox option {
+  background-color: white;
+  color: #7b4f63;
+  padding: 10px;
 }
 
-
-
-/* Botón Continuar con efecto de pulso */
+/* =========================================
+   3. BOTÓN CONTINUAR (MATCH CON EL COMBO)
+   ========================================= */
 .continue-btn {
-  background: linear-gradient(135deg, #ff4a68 0%, #ff1f4a 100%);
+  /* Fondo rosa elegante (más fuerte que el combo, pero no rojo) */
+  background-color: #d63384;
   color: white;
   border: none;
-  padding: 15px 35px;
-  border-radius: 50px;
+
+  /* Bordes redondeados y espacio */
+  border-radius: 25px;
+  padding: 12px 30px;
+
+  /* Tipografía */
   font-weight: bold;
-  box-shadow: 0 4px 15px rgba(255, 31, 74, 0.4);
-  transition: transform 0.2s;
+  font-size: 16px;
+  text-transform: uppercase; /* Texto en mayúsculas para que resalte */
+  letter-spacing: 1px;
+
+  /* Efectos */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(214, 51, 132, 0.3);
 }
 
 .continue-btn:hover {
-  transform: scale(1.05); /* Se hace un poquito más grande al tocarlo */
-}
-
-/* El combo de idiomas más elegante */
-.slam-combobox {
-  border: 2px solid #ff4a68;
-  border-radius: 20px;
-  padding: 8px 15px;
-  background-color: white;
-  color: #ff4a68;
-  font-weight: bold;
-  outline: none;
-}
-
-/* Contenedor del combo */
-.lang-selector-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-/* El estilo del combo (SELECT) */
-.slam-combobox {
-  background-color: #ffe6eb; /* Rosa pastel suave */
-  color: #d63384; /* Texto rosa fuerte */
-  border: 2px solid #ff4a68;
-  border-radius: 20px;
-  padding: 10px 15px;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-  outline: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.slam-combobox:hover {
-  background-color: #ff4a68;
-  color: white;
-}
-
-/* El icono del mundo */
-.lang-label i {
-  color: #ff4a68;
-  font-size: 24px;
+  background-color: #a8003a; /* Un tono más oscuro elegante */
+  transform: scale(1.03); /* Se agranda un poquito suavemente */
+  box-shadow: 0 6px 15px rgba(168, 0, 58, 0.4);
 }

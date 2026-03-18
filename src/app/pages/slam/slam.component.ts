@@ -32,6 +32,8 @@ export class SlamComponent implements OnInit {
   preguntasTraducidas: { [key: number]: string } = {};
   cargandoTraduccion = false;
 
+  cargando: boolean = false;
+
   constructor(private preguntaService: PreguntaService, private respuestaService: RespuestaService,
     private traduccionService: TraduccionService) {}
 
@@ -202,24 +204,23 @@ cambiarIdioma(lang: string) {
 }
 
 obtenerTraduccionActual() {
-  const pregunta = this.preguntas[this.preguntaActual];
+    const pregunta = this.preguntas[this.preguntaActual];
+    if (this.idiomaSeleccionado === 'es') return;
+    if (this.preguntasTraducidas[pregunta.id]) return;
 
-  // Si es español, no llamamos al servicio (ahorra recursos)
-  if (this.idiomaSeleccionado === 'es') return;
+    this.cargando = true; // 🚀 Empezamos a cargar
 
-  // Si ya la tenemos traducida antes, tampoco llamamos de nuevo
-  if (this.preguntasTraducidas[pregunta.id]) return;
-
-  this.traduccionService.traducir(pregunta.texto, this.idiomaSeleccionado).subscribe({
-    next: (res) => {
-      // IMPORTANTE: Guardamos la traducción usando el ID de la pregunta
-      this.preguntasTraducidas[pregunta.id] = res;
-    },
-    error: (err) => {
-      console.error('Error traduciendo:', err);
-    }
-  });
-}
+    this.traduccionService.traducir(pregunta.texto, this.idiomaSeleccionado).subscribe({
+      next: (res) => {
+        this.preguntasTraducidas[pregunta.id] = res;
+        this.cargando = false; // ✅ Terminamos
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.cargando = false; // ❌ Terminamos aunque falle
+      }
+    });
+  }
 
 
 }
