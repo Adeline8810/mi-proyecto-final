@@ -25,13 +25,14 @@ export class TraduccionService {
     );
   }
 
- buscarUsuarios(nombre: string): Observable<any[]> {
-    // Uso de comillas invertidas `` para las variables
+ // Paso 1: Busca personas (Va al UsuarioController)
+  buscarUsuarios(nombre: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUsuarios}/buscar-usuarios?nombre=${nombre}`);
   }
 
-  buscarRespuestasPorAmigo(nombre: string): Observable<any[]> {
-  // Enviamos el nombre tal cual para que la Query encuentre la coincidencia exacta
-  return this.http.get<any[]>(`${this.apiRespuestas}/buscar-por-nombre?nombre=${nombre}`);
-}
+  // Paso 2: Busca el SLAM (Va al RespuestaController)
+  buscarRespuestasPorAmigo(username: string): Observable<any[]> {
+    // Usamos 'username' para que sea único y no salgan duplicados
+    return this.http.get<any[]>(`${this.apiRespuestas}/buscar-por-nombre?nombre=${username}`);
+  }
 }
