@@ -93,21 +93,27 @@ export class SlamComponent implements OnInit {
   });
 }
 
-  onFotoSeleccionada(ev: any) {
-    const f: File = ev.target.files && ev.target.files[0];
-    if (!f) return;
-    this.fotoFile = f;
-    const reader = new FileReader();
-    reader.onload = (e) => this.fotoPreview = (e.target as any).result;
-    reader.readAsDataURL(f);
-  }
-
+onFotoSeleccionada(ev: any) {
+  const f: File = ev.target.files && ev.target.files[0];
+  if (!f) return;
+  this.fotoFile = f;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const result = (e.target as any).result;
+    this.fotoPreview = result;
+    this.fotoUrlServidor = result; // Guardamos temporalmente la base64 para la vista
+  };
+  reader.readAsDataURL(f);
+}
   anterior() {
     this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
     if (this.preguntaActual > 0) {
       this.preguntaActual--;
       this.respuestaActual = this.respuestas[this.preguntaActual].texto || '';
-      this.fotoPreview = this.respuestas[this.preguntaActual].fotoUrl || null;
+      //this.fotoPreview = this.respuestas[this.preguntaActual].fotoUrl || null;
+     this.fotoPreview = this.respuestas[this.preguntaActual].fotoUrl || this.fotoUrlServidor;
+
+
     }
     this.obtenerTraduccionActual();
   }
@@ -125,8 +131,8 @@ export class SlamComponent implements OnInit {
     if (this.preguntaActual < this.preguntas.length - 1) {
       this.preguntaActual++;
       this.respuestaActual = this.respuestas[this.preguntaActual].texto || '';
-      this.fotoPreview = this.respuestas[this.preguntaActual].fotoUrl || null;
-
+      //this.fotoPreview = this.respuestas[this.preguntaActual].fotoUrl || null;
+this.fotoPreview = this.respuestas[this.preguntaActual].fotoUrl || this.fotoUrlServidor;
       // Animación opcional de "bounce"
       const title = document.querySelector('.slam-title');
       if (title) {
@@ -173,43 +179,29 @@ lanzarChispitas() {
 
 
  async guardarTodo() {
-  // 1. Guardar el texto de la última pregunta en el array
   this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
 
   try {
     if (this.fotoFile) {
-      // LLAMADA AL BACKEND: Obtenemos el "publicPath" (ej: /uploads/imagen.jpg)
       const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile));
-
-      // CAMBIO IMPORTANTE: Construimos la URL completa para que Angular pueda mostrarla
-      // Usamos la variable 'api' de tu servicio pero apuntando a la raíz del servidor
       const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}`;
 
-      // Asignamos la URL completa a la respuesta
-      this.respuestas[this.preguntaActual].fotoUrl = urlCompleta;
-
-      console.log('Foto disponible en:', urlCompleta);
+      // Sincronizamos la URL en todas las respuestas para que siempre aparezca
+      this.respuestas.forEach(r => r.fotoUrl = urlCompleta);
+      this.fotoUrlServidor = urlCompleta;
     }
   } catch (err) {
     console.error('Error al subir foto:', err);
   }
 
-  // 2. Enviar el payload final con todas las respuestas y la URL de la foto
   this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
     next: () => {
       this.completado = true;
-
-      // SOLUCIÓN AL ERROR DE TYPESCRIPT (Subrayado rojo)
-      const fotoFinal = this.respuestas[this.preguntaActual].fotoUrl;
-      if (fotoFinal) {
-        // Guardamos la URL completa en el storage para usarla en otras pantallas
-        localStorage.setItem('user_foto_perfil', fotoFinal);
+      if (this.fotoUrlServidor) {
+        localStorage.setItem('user_foto_perfil', this.fotoUrlServidor);
       }
     },
-    error: err => {
-      console.error('Error al conectar con el servidor:', err);
-      alert('Hubo un error al guardar los datos.');
-    }
+    error: err => alert('Error al guardar')
   });
 }
 
