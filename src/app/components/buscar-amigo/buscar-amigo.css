@@ -1,19 +1,21 @@
-/* Contenedor general */
+/* Contenedor Principal */
 .search-page {
   max-width: 800px;
-  margin: auto;
+  margin: 2rem auto;
   padding: 20px;
-  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.1);
+  font-family: 'Roboto', sans-serif;
 }
 
-/* Título */
 .title {
+  color: #d81b60;
   text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
+  font-weight: bold;
 }
 
-/* Barra de búsqueda */
+/* Barra de Búsqueda */
 .search-bar {
   display: flex;
   gap: 10px;
@@ -22,249 +24,137 @@
 
 .search-bar input {
   flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+  padding: 12px;
+  border: 2px solid #fce4ec;
+  border-radius: 25px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-bar input:focus {
+  border-color: #f06292;
 }
 
 .search-bar button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 10px;
-  background-color: #ff4da6;
+  background-color: #f06292;
   color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: 0.3s;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 .search-bar button:hover {
-  background-color: #e60073;
+  background-color: #d81b60;
+  transform: scale(1.05);
 }
 
-/* Tabla usuarios */
+/* Tabla de Usuarios (Paso 1) */
 .tabla-usuarios {
   width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  margin-top: 20px;
 }
 
 .tabla-usuarios th {
-  background-color: #ff4da6;
-  color: white;
+  color: #880e4f;
+  text-align: left;
   padding: 10px;
+  border-bottom: 2px solid #f8bbd0;
 }
 
 .tabla-usuarios td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
+  padding: 15px 10px;
+  background-color: #fff9fa;
 }
 
+.tabla-usuarios tr td:first-child { border-radius: 10px 0 0 10px; }
+.tabla-usuarios tr td:last-child { border-radius: 0 10px 10px 0; }
+
 .btn-ver {
-  background: #ff4da6;
-  border: none;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 8px;
+  background: white;
+  border: 1px solid #f06292;
+  color: #f06292;
+  padding: 5px 15px;
+  border-radius: 15px;
   cursor: pointer;
 }
 
 .btn-ver:hover {
-  background: #e60073;
-}
-
-/* BOTÓN VOLVER */
-.btn-volver {
-  margin-bottom: 15px;
-  background: #333;
+  background: #f06292;
   color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
 }
 
-/* FOTO PERFIL */
-.perfil-header {
-  text-align: center;
-  margin-bottom: 20px;
+/* Contenedor de SLAM (Paso 2) */
+.resultado-container {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.pregunta-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-left: 5px solid #f06292;
+  background-color: #fffcfd;
+  border-radius: 0 10px 10px 0;
+}
+
+.pregunta-txt {
+  color: #ad1457;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+}
+
+.respuesta-txt {
+  color: #444;
+  font-style: italic;
+  font-size: 1.1rem;
 }
 
 .foto-perfil-amigo {
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  border: 4px solid #f06292;
   object-fit: cover;
-  border: 4px solid #ff4da6;
-}
-
-/* TARJETAS DE PREGUNTA/RESPUESTA */
-.resultado-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.resultado-container > div {
-  background: #fff;
-  padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.2s;
-}
-
-.resultado-container > div:hover {
-  transform: scale(1.02);
-}
-
-/* PREGUNTA */
-.resultado-container p b {
-  color: #ff1493; /* FUCSIA */
-  font-size: 16px;
-}
-
-/* RESPUESTA */
-.resultado-container p {
-  color: #555; /* GRIS */
-  margin: 5px 0;
-  font-size: 15px;
-}
-
-
-
-
-
-
-
-.card {
-  background: #fff;
-  padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.pregunta {
-  color: #ff1493;
-  font-weight: bold;
-}
-
-.respuesta {
-  color: #666;
-}
-
-
-/* Contenedor principal */
-.search-page {
-  max-width: 900px;
-  margin: 40px auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 20px;
-}
-
-/* Título */
-.title {
-  text-align: center;
-  color: #c2185b; /* Rosa elegante */
-  font-size: 2rem;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-}
-
-/* Barra de búsqueda */
-.search-bar {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 40px;
-}
-
-.search-bar input {
-  padding: 10px 15px;
-  border: 2px solid #f8bbd0; /* Rosa pastel suave */
-  border-radius: 25px;
-  width: 250px;
-}
-
-.search-bar button {
-  padding: 10px 20px;
-  background-color: #f06292; /* Rosa pastel elegante */
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-}
-
-/* Estilos para LOS DOS botones de volver */
-.contenedor-botones {
-  display: flex;
-  gap: 15px; /* Espacio entre los botones */
-  margin-bottom: 25px;
-}
-
-.btn-volver,
-.btn-volver-buscador {
-  background-color: white;
-  color: #f06292; /* Rosa elegante */
-  border: 2px solid #f06292;
-  padding: 8px 18px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-}
-
-.btn-volver:hover,
-.btn-volver-buscador:hover {
-  background-color: #f06292; /* Relleno rosa suave */
-  color: white;
-}
-
-/* Foto de perfil */
-.foto-perfil-amigo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 3px solid #f8bbd0;
   display: block;
-  margin: 0 auto 20px;
-  object-fit: cover;
+  margin: 20px auto;
 }
 
-/* Cards de Respuestas */
-.card {
-  background-color: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-  border-left: 4px solid #f8bbd0; /* Borde izquierdo rosa suave */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ⬇️ PREGUNTAS EN ROSA (Texto y emoji) */
-.pregunta {
-  font-weight: bold;
-  color: #c2185b; /* Rosa profundo elegante */
-  margin-bottom: 10px;
-  font-size: 1.1rem;
-}
-
-/* ⬇️ RESPUESTAS EN GRIS (Texto e icono de check) */
-.respuesta {
-  color: #616161; /* Gris oscuro para legibilidad */
-  font-style: italic;
-  font-size: 1rem;
-  padding-left: 10px;
+/* Estilo para el botón Volver a la lista */
+.btn-volver {
+  background-color: #fce4ec; /* Rosa muy claro de fondo */
+  color: #d81b60;           /* Rosa fuerte para el texto */
+  border: 2px solid #f8bbd0; /* Borde rosa suave */
+  padding: 8px 20px;
+  border-radius: 20px;       /* Bordes muy redondeados */
+  font-weight: 600;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 25px;       /* Espacio con el contenido de abajo */
+  transition: all 0.3s ease; /* Animación suave */
+  width: fit-content;        /* Que solo ocupe el espacio del texto */
 }
 
-.respuesta i {
-  color: #9e9e9e; /* Un gris un poco más claro para el check */
+.btn-volver:hover {
+  background-color: #f06292; /* Cambia a rosa más fuerte al pasar el mouse */
+  color: white;              /* Texto blanco al hover */
+  border-color: #f06292;
+  transform: translateX(-5px); /* Pequeño salto a la izquierda (efecto volver) */
+  box-shadow: 0 4px 8px rgba(240, 98, 146, 0.3);
 }
+
+.btn-volver:active {
+  transform: scale(0.95);    /* Efecto de pulsado */
+}
+
