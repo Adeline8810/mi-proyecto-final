@@ -10,22 +10,25 @@ import { TraduccionService } from '../../../services/traduccion.service';
   templateUrl: './buscar-amigo.html',
   styleUrl: './buscar-amigo.css',
 })
+// ... (imports y decorador @Component)
 export class BuscarAmigo {
   busquedaNombre: string = '';
-  amigosEncontrados: any[] = []; // Almacena la lista de personas
-  respuestasAmigo: any[] = [];   // Almacena el SLAM del amigo elegido
+  amigosEncontrados: any[] = [];
+  respuestasAmigo: any[] = [];
   cargando: boolean = false;
-  mostrarSlam: boolean = false;  // Controla qué vista mostrar
+  mostrarSlam: boolean = false;
 
   constructor(private miServicio: TraduccionService) { }
 
-  // PASO 1: Buscar coincidencias de nombres/usuarios
   buscarAmigos() {
     if (!this.busquedaNombre.trim()) return;
 
     this.cargando = true;
     this.mostrarSlam = false;
+
+    // 🔥 IMPORTANTE: Limpiar los arrays antes de una nueva búsqueda
     this.amigosEncontrados = [];
+    this.respuestasAmigo = [];
 
     this.miServicio.buscarUsuarios(this.busquedaNombre).subscribe({
       next: (data) => {
@@ -33,20 +36,25 @@ export class BuscarAmigo {
         this.cargando = false;
       },
       error: (err) => {
-        console.error("Error buscando usuarios:", err);
+        console.error("Error:", err);
         this.cargando = false;
       }
     });
   }
 
-  // PASO 2: Cargar el SLAM de la persona seleccionada
   verSlam(amigo: any) {
     this.cargando = true;
-    // Usamos el nombre exacto para que no salgan duplicados
+
+    // 🔥 CLAVE PARA EVITAR DUPLICADOS:
+    // Limpiamos la lista de amigos encontrados para que solo quede el SLAM
+    this.amigosEncontrados = [];
+    this.respuestasAmigo = [];
+
+    // Buscamos solo por el nombre exacto del amigo seleccionado
     this.miServicio.buscarRespuestasPorAmigo(amigo.nombre).subscribe({
       next: (data) => {
         this.respuestasAmigo = data;
-        this.mostrarSlam = true;
+        this.mostrarSlam = true; // Esto activa la vista del cuestionario en el HTML
         this.cargando = false;
       },
       error: (err) => {
@@ -58,5 +66,8 @@ export class BuscarAmigo {
 
   volverALista() {
     this.mostrarSlam = false;
+    this.respuestasAmigo = []; // Limpiamos al salir
+    // Opcional: podrías volver a ejecutar buscarAmigos() aquí
+    // si quieres que la lista de búsqueda reaparezca.
   }
 }
