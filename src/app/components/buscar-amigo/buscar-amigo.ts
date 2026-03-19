@@ -11,10 +11,11 @@ import { TraduccionService } from '../../../services/traduccion.service';
   styleUrl: './buscar-amigo.css',
 })
 // ... (imports y decorador @Component)
+// ... imports
 export class BuscarAmigo {
   busquedaNombre: string = '';
   amigosEncontrados: any[] = [];
-  respuestasAmigo: any[] = [];
+  respuestasAmigo: any[] = []; // Aquí llegarán los 3 campos del DTO
   cargando: boolean = false;
   mostrarSlam: boolean = false;
 
@@ -22,48 +23,36 @@ export class BuscarAmigo {
 
   buscarAmigos() {
     if (!this.busquedaNombre.trim()) return;
-
     this.cargando = true;
     this.mostrarSlam = false;
-
-    // 🔥 IMPORTANTE: Limpiar los arrays antes de una nueva búsqueda
     this.amigosEncontrados = [];
-    this.respuestasAmigo = [];
 
     this.miServicio.buscarUsuarios(this.busquedaNombre).subscribe({
       next: (data) => {
         this.amigosEncontrados = data;
         this.cargando = false;
       },
-      error: (err) => {
-        console.error("Error:", err);
-        this.cargando = false;
-      }
+      error: () => this.cargando = false
     });
   }
 
   verSlam(amigo: any) {
-  this.cargando = true;
-  this.respuestasAmigo = []; // Limpieza para evitar duplicados visuales
+    this.cargando = true;
+    this.respuestasAmigo = []; // 🔥 Limpieza crítica para evitar duplicados
 
-  // Pasamos amigo.username (que es el @aaaa2, por ejemplo)
-  this.miServicio.buscarRespuestasPorAmigo(amigo.username).subscribe({
-    next: (data) => {
-      this.respuestasAmigo = data;
-      this.mostrarSlam = true;
-      this.cargando = false;
-    },
-    error: (err) => {
-      console.error("Error al obtener el SLAM:", err);
-      this.cargando = false;
-    }
-  });
-}
+    // Usamos el username único que definimos en el Backend
+    this.miServicio.buscarRespuestasPorAmigo(amigo.username).subscribe({
+      next: (data) => {
+        this.respuestasAmigo = data; // Ahora contiene: pregunta, respuesta, fotoUrl
+        this.mostrarSlam = true;
+        this.cargando = false;
+      },
+      error: () => this.cargando = false
+    });
+  }
 
   volverALista() {
     this.mostrarSlam = false;
-    this.respuestasAmigo = []; // Limpiamos al salir
-    // Opcional: podrías volver a ejecutar buscarAmigos() aquí
-    // si quieres que la lista de búsqueda reaparezca.
+    this.respuestasAmigo = [];
   }
 }
