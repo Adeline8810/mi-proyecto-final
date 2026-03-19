@@ -27,7 +27,7 @@ export class SlamComponent implements OnInit {
   completado = false;
   usuarioId!: number; // ✅ Ahora siempre será number después de la verificación
   nombreUsuario: string = '';
-
+  fotoUrlServidor: string | null = null;
   idiomaSeleccionado = 'es';
   preguntasTraducidas: { [key: string]: { [id: number]: string } } = {};
   cargandoTraduccion = false;
@@ -39,6 +39,14 @@ export class SlamComponent implements OnInit {
 
   ngOnInit(): void {
     const u = localStorage.getItem('usuario');
+    const fotoGuardada = localStorage.getItem('user_foto_perfil');
+    if (fotoGuardada) {
+    // Si existe, se la asignamos a la variable que muestra la imagen en el HTML
+    this.fotoUrlServidor = fotoGuardada;
+    // Si estás en el formulario del Slam, asígnale la URL a la respuesta actual
+    this.respuestas[this.preguntaActual].fotoUrl = fotoGuardada;
+  }
+
     if (!u) {
       alert('Debes iniciar sesión');
       return;
