@@ -43,26 +43,22 @@ export class BuscarAmigo {
   }
 
   verSlam(amigo: any) {
-    this.cargando = true;
+  this.cargando = true;
+  this.respuestasAmigo = []; // Limpieza para evitar duplicados visuales
 
-    // 🔥 CLAVE PARA EVITAR DUPLICADOS:
-    // Limpiamos la lista de amigos encontrados para que solo quede el SLAM
-    this.amigosEncontrados = [];
-    this.respuestasAmigo = [];
-
-    // Buscamos solo por el nombre exacto del amigo seleccionado
-    this.miServicio.buscarRespuestasPorAmigo(amigo.nombre).subscribe({
-      next: (data) => {
-        this.respuestasAmigo = data;
-        this.mostrarSlam = true; // Esto activa la vista del cuestionario en el HTML
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error("Error cargando SLAM:", err);
-        this.cargando = false;
-      }
-    });
-  }
+  // Pasamos amigo.username (que es el @aaaa2, por ejemplo)
+  this.miServicio.buscarRespuestasPorAmigo(amigo.username).subscribe({
+    next: (data) => {
+      this.respuestasAmigo = data;
+      this.mostrarSlam = true;
+      this.cargando = false;
+    },
+    error: (err) => {
+      console.error("Error al obtener el SLAM:", err);
+      this.cargando = false;
+    }
+  });
+}
 
   volverALista() {
     this.mostrarSlam = false;

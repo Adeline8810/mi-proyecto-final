@@ -39,7 +39,9 @@
   </div>
 
   <div class="resultado-container" *ngIf="mostrarSlam">
-    <button class="btn-volver" (click)="volverALista()">⬅ Volver a la lista</button>
+    <button class="btn-volver" (click)="volverALista()">
+    <span>⬅</span> Volver a la lista de amigos
+  </button>
 
     <div class="perfil-header" *ngIf="respuestasAmigo.length > 0 && respuestasAmigo[0].fotoUrl">
        <img [src]="'https://backend-cloudv2-production-1443.up.railway.app' + respuestasAmigo[0].fotoUrl"

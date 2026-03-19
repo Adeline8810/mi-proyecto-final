@@ -31,6 +31,7 @@ export class TraduccionService {
   }
 
   buscarRespuestasPorAmigo(nombre: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiRespuestas}/buscar-por-nombre?nombre=${nombre}`);
-  }
+  // Enviamos el nombre tal cual para que la Query encuentre la coincidencia exacta
+  return this.http.get<any[]>(`${this.apiRespuestas}/buscar-por-nombre?nombre=${nombre}`);
+}
 }

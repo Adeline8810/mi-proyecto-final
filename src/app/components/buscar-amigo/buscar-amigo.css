@@ -128,3 +128,32 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Estilo para el botón Volver a la lista */
+.btn-volver {
+  background-color: #fce4ec; /* Rosa muy claro de fondo */
+  color: #d81b60;           /* Rosa fuerte para el texto */
+  border: 2px solid #f8bbd0; /* Borde rosa suave */
+  padding: 8px 20px;
+  border-radius: 20px;       /* Bordes muy redondeados */
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 25px;       /* Espacio con el contenido de abajo */
+  transition: all 0.3s ease; /* Animación suave */
+  width: fit-content;        /* Que solo ocupe el espacio del texto */
+}
+
+.btn-volver:hover {
+  background-color: #f06292; /* Cambia a rosa más fuerte al pasar el mouse */
+  color: white;              /* Texto blanco al hover */
+  border-color: #f06292;
+  transform: translateX(-5px); /* Pequeño salto a la izquierda (efecto volver) */
+  box-shadow: 0 4px 8px rgba(240, 98, 146, 0.3);
+}
+
+.btn-volver:active {
+  transform: scale(0.95);    /* Efecto de pulsado */
+}
