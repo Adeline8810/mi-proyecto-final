@@ -188,9 +188,6 @@ async guardarTodo() {
 
       // 2. Subimos la foto pasando el ID
       const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile, usuarioId));
-console.log("Lo que llega del server es:", pathRelativo);
-
-
 
       // 3. Limpiamos la URL con un "timestamp" para romper la caché del navegador
       const timestamp = new Date().getTime();
