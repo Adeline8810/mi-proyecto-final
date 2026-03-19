@@ -179,63 +179,53 @@ lanzarChispitas() {
 
 
 async guardarTodo() {
-  // 1. Aseguramos que el texto de la pregunta actual se guarde en el array
-  if (this.respuestas[this.preguntaActual]) {
-    this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
-  }
+  this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
 
   try {
-    // 2. Si el usuario seleccionó una foto, la subimos PRIMERO
     if (this.fotoFile) {
+      // 1. Obtenemos el ID del usuario logueado (importante para que el backend sepa de quién es la foto)
       const usuarioId = localStorage.getItem('usuarioId') || '';
 
-      if (!usuarioId) {
-        console.error("No hay usuarioId en el localStorage");
-        alert("Error: No se detectó tu sesión de usuario.");
-        return;
-      }
-
-      // Subimos la foto y esperamos la respuesta del servidor (pathRelativo)
+      // 2. Subimos la foto pasando el ID
       const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile, usuarioId));
-      console.log("Respuesta del servidor (path):", pathRelativo);
+console.log("Lo que llega del server es:", pathRelativo);
 
-      // 3. Construimos la URL con el truco del 'timestamp' (?v=...) para que no se quede la foto vieja
-      // NOTA: Si tu pathRelativo ya empieza con "http", no le sumes la URL de Railway
-      const baseApi = 'https://backend-cloudv2-production-1443.up.railway.app';
-      const urlCompleta = pathRelativo.startsWith('http')
-                          ? `${pathRelativo}?v=${new Date().getTime()}`
-                          : `${baseApi}${pathRelativo}?v=${new Date().getTime()}`;
 
-      // 4. Sincronizamos esta URL en todas las respuestas del array para la base de datos
+
+      // 3. Limpiamos la URL con un "timestamp" para romper la caché del navegador
+      const timestamp = new Date().getTime();
+      //const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?t=${timestamp}`;
+const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?v=${new Date().getTime()}`;
+      // Sincronizamos
       this.respuestas.forEach(r => r.fotoUrl = urlCompleta);
       this.fotoUrlServidor = urlCompleta;
-
-      // Guardamos en el storage para que el perfil se vea actualizado al instante
       localStorage.setItem('user_foto_perfil', urlCompleta);
+
     }
-
-    // 5. Una vez que la foto ya se procesó (o si no había foto), guardamos las respuestas
-    this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
-      next: () => {
-        this.completado = true;
-        console.log('¡Slam guardado con éxito!');
-
-        // Reforzamos el guardado de la foto en el storage por si acaso
-        if (this.fotoUrlServidor) {
-          localStorage.setItem('user_foto_perfil', this.fotoUrlServidor);
-        }
-      },
-      error: (err) => {
-        console.error('Error al guardar respuestas:', err);
-        alert('Se guardó la foto pero hubo un error con las preguntas.');
-      }
-    });
-
   } catch (err) {
-    console.error('Error crítico en el proceso de subida:', err);
-    alert('No se pudo subir la foto. Revisa tu conexión o el tamaño del archivo.');
+    console.error('Error al subir foto:', err);
+    alert('Hubo un problema al subir la imagen.');
   }
+
+  // Guardar el resto de respuestas
+ this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
+  next: () => {
+    this.completado = true;
+
+    // Si subimos una foto, la guardamos en el localStorage para que
+    // al refrescar el perfil se vea la nueva y no la de Ruth
+    if (this.fotoUrlServidor) {
+      localStorage.setItem('user_foto_perfil', this.fotoUrlServidor);
+      console.log('Foto actualizada en storage:', this.fotoUrlServidor);
+    }
+  },
+  error: err => {
+    console.error(err);
+    alert('Error al guardar respuestas');
+  }
+});
 }
+
 
 
 
