@@ -34,9 +34,9 @@
         alt="Foto de perfil">
 </div>
 
- <div *ngFor="let item of respuestasAmigo">
-   <p><b>Pregunta:</b> {{ item.pregunta }}</p>
-   <p><b>Respuesta:</b> {{ item.respuesta }}</p>
+ <div *ngFor="let item of respuestasAmigo" class="card">
+  <p class="pregunta">💖 {{ item.pregunta }}</p>
+  <p class="respuesta">{{ item.respuesta }}</p>
 </div>
   </div>
 </div>
