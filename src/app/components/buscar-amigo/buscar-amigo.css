@@ -1,35 +1,130 @@
+/* Contenedor Principal */
 .search-page {
-  max-width: 600px;
-  margin: 40px auto;
+  max-width: 800px;
+  margin: 2rem auto;
   padding: 20px;
-  background-color: #fffafa;
+  background-color: #fff;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(236, 179, 203, 0.2);
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.1);
+  font-family: 'Roboto', sans-serif;
 }
 
 .title {
-  color: #d63384;
-  margin-bottom: 25px;
+  color: #d81b60;
+  text-align: center;
+  font-weight: bold;
 }
 
-/* Diseño de Cuestionario */
-.pregunta-item {
-  margin-bottom: 25px;
-  padding-left: 15px;
-  border-left: 4px solid #ecb3cb; /* Línea rosa pastel a la izquierda */
+/* Barra de Búsqueda */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #fce4ec;
+  border-radius: 25px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-bar input:focus {
+  border-color: #f06292;
+}
+
+.search-bar button {
+  background-color: #f06292;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.search-bar button:hover {
+  background-color: #d81b60;
+  transform: scale(1.05);
+}
+
+/* Tabla de Usuarios (Paso 1) */
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  margin-top: 20px;
+}
+
+.tabla-usuarios th {
+  color: #880e4f;
   text-align: left;
+  padding: 10px;
+  border-bottom: 2px solid #f8bbd0;
+}
+
+.tabla-usuarios td {
+  padding: 15px 10px;
+  background-color: #fff9fa;
+}
+
+.tabla-usuarios tr td:first-child { border-radius: 10px 0 0 10px; }
+.tabla-usuarios tr td:last-child { border-radius: 0 10px 10px 0; }
+
+.btn-ver {
+  background: white;
+  border: 1px solid #f06292;
+  color: #f06292;
+  padding: 5px 15px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.btn-ver:hover {
+  background: #f06292;
+  color: white;
+}
+
+/* Contenedor de SLAM (Paso 2) */
+.resultado-container {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.pregunta-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-left: 5px solid #f06292;
+  background-color: #fffcfd;
+  border-radius: 0 10px 10px 0;
 }
 
 .pregunta-txt {
-  color: #8b1e4b; /* Rosa Oscuro Elegante */
+  color: #ad1457;
   font-weight: bold;
-  font-size: 1.1rem;
   margin-bottom: 5px;
+  font-size: 0.95rem;
 }
 
 .respuesta-txt {
-  color: #757575; /* Gris */
+  color: #444;
   font-style: italic;
-  font-size: 1rem;
-  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.foto-perfil-amigo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #f06292;
+  object-fit: cover;
+  display: block;
+  margin: 20px auto;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
