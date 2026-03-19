@@ -167,30 +167,44 @@ lanzarChispitas() {
 
 
  async guardarTodo() {
-    // 1. IMPORTANTE: Guardar el texto de la última pregunta en el array antes de enviar
-    this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
+  // 1. Guardar el texto de la última pregunta en el array
+  this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
 
-    try {
-      // Manejo de foto (tu código actual está bien)
-      if (this.fotoFile) {
-        const url = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile));
-        this.respuestas[this.preguntaActual].fotoUrl = url; // Se la asignamos a la actual
-      }
-    } catch (err) {
-      console.error('Error foto:', err);
+  try {
+    if (this.fotoFile) {
+      // LLAMADA AL BACKEND: Obtenemos el "publicPath" (ej: /uploads/imagen.jpg)
+      const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile));
+
+      // CAMBIO IMPORTANTE: Construimos la URL completa para que Angular pueda mostrarla
+      // Usamos la variable 'api' de tu servicio pero apuntando a la raíz del servidor
+      const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}`;
+
+      // Asignamos la URL completa a la respuesta
+      this.respuestas[this.preguntaActual].fotoUrl = urlCompleta;
+
+      console.log('Foto disponible en:', urlCompleta);
     }
+  } catch (err) {
+    console.error('Error al subir foto:', err);
+  }
 
-    // 2. Enviar el payload
-    this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
-      next: () => {
-        this.completado = true;
-        // Opcional: limpiar el storage o redirigir
-      },
-      error: err => {
-        console.error('Error 404 o 500:', err);
-        alert('Hubo un error al conectar con el servidor');
+  // 2. Enviar el payload final con todas las respuestas y la URL de la foto
+  this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
+    next: () => {
+      this.completado = true;
+
+      // SOLUCIÓN AL ERROR DE TYPESCRIPT (Subrayado rojo)
+      const fotoFinal = this.respuestas[this.preguntaActual].fotoUrl;
+      if (fotoFinal) {
+        // Guardamos la URL completa en el storage para usarla en otras pantallas
+        localStorage.setItem('user_foto_perfil', fotoFinal);
       }
-    });
+    },
+    error: err => {
+      console.error('Error al conectar con el servidor:', err);
+      alert('Hubo un error al guardar los datos.');
+    }
+  });
 }
 
 
