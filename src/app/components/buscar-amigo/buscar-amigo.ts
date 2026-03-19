@@ -47,7 +47,11 @@ export class BuscarAmigo {
         this.mostrarSlam = true;
         this.cargando = false;
       },
-      error: () => this.cargando = false
+      error: () => {
+        this.cargando = false;
+        this.respuestasAmigo = []; // Si hay error, también limpiamos
+      }
+
     });
   }
 
@@ -63,5 +67,8 @@ export class BuscarAmigo {
     this.amigosEncontrados = []; // 🔥 Limpia la lista de amigos
     this.busquedaNombre = '';   // 🔥 Limpia la barra de búsqueda
   }
+
+
+  obtenerTiempo() { return new Date().getTime(); }
 
 }
