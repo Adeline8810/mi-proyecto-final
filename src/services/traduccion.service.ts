@@ -26,13 +26,15 @@ export class TraduccionService {
   }
 
  // Paso 1: Busca personas (Va al UsuarioController)
-  buscarUsuarios(nombre: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUsuarios}/buscar-usuarios?nombre=${nombre}`);
-  }
+ buscarUsuarios(nombre: string): Observable<any[]> {
+  // encodeURIComponent limpia espacios y caracteres raros para la URL
+  return this.http.get<any[]>(`${this.apiUsuarios}/buscar-usuarios?nombre=${encodeURIComponent(nombre)}`);
+}
 
   // Paso 2: Busca el SLAM (Va al RespuestaController)
-  buscarRespuestasPorAmigo(username: string): Observable<any[]> {
-    // Usamos 'username' para que sea único y no salgan duplicados
-    return this.http.get<any[]>(`${this.apiRespuestas}/buscar-por-nombre?nombre=${username}`);
-  }
+ buscarRespuestasPorAmigo(username: string): Observable<any[]> {
+  // ✅ CAMBIO: Cambiamos 'nombre=' por 'username='
+  // Esto debe coincidir exactamente con el @Param de tu Repository
+  return this.http.get<any[]>(`${this.apiRespuestas}/buscar-por-nombre?username=${username}`);
+}
 }
