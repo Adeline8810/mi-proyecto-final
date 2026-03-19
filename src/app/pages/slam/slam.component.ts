@@ -178,15 +178,22 @@ lanzarChispitas() {
 
 
 
- async guardarTodo() {
+async guardarTodo() {
   this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
 
   try {
     if (this.fotoFile) {
-      const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile));
-      const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}`;
+      // 1. Obtenemos el ID del usuario logueado (importante para que el backend sepa de quién es la foto)
+      const usuarioId = localStorage.getItem('usuarioId') || '';
 
-      // Sincronizamos la URL en todas las respuestas para que siempre aparezca
+      // 2. Subimos la foto pasando el ID
+      const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile, usuarioId));
+
+      // 3. Limpiamos la URL con un "timestamp" para romper la caché del navegador
+      const timestamp = new Date().getTime();
+      const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?t=${timestamp}`;
+
+      // Sincronizamos
       this.respuestas.forEach(r => r.fotoUrl = urlCompleta);
       this.fotoUrlServidor = urlCompleta;
     }
@@ -194,6 +201,7 @@ lanzarChispitas() {
     console.error('Error al subir foto:', err);
   }
 
+  // Guardar el resto de respuestas
   this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
     next: () => {
       this.completado = true;
@@ -201,7 +209,7 @@ lanzarChispitas() {
         localStorage.setItem('user_foto_perfil', this.fotoUrlServidor);
       }
     },
-    error: err => alert('Error al guardar')
+    error: err => alert('Error al guardar respuestas')
   });
 }
 

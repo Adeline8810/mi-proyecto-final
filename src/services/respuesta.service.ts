@@ -10,9 +10,10 @@ export class RespuestaService {
 
   constructor(private http: HttpClient) {}
 
- subirFoto(file: File): Observable<string> {
+ subirFoto(file: File,usuarioId: string): Observable<string> {
   const fd = new FormData();
   fd.append('file', file);
+  fd.append('usuarioId', usuarioId);
 
 return this.http.post(`${this.api}/upload`, fd, {
   responseType: 'text' as 'text'
