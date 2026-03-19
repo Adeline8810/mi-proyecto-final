@@ -12,8 +12,8 @@ export class TraduccionService {
   private apiBase = 'https://backend-cloudv2-production-1443.up.railway.app/api';
 
   // Estas son las que causaban error si no estaban bien declaradas:
-  private apiUsuarios = `${this.apiBase}/usuarios`;
-  private apiRespuestas = `${this.apiBase}/respuestas`;
+  private apiUsuarios = 'https://backend-cloudv2-production-1443.up.railway.app/api/usuarios';
+  private apiRespuestas = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas';
 
   constructor(private http: HttpClient) { }
 
@@ -25,14 +25,11 @@ export class TraduccionService {
     );
   }
 
-  // PASO 1: Busca personas (Va al UsuarioController)
-  // Asegúrate de que en Java el endpoint sea /api/usuarios/buscar-usuarios
-  buscarUsuarios(nombre: string): Observable<any[]> {
+ buscarUsuarios(nombre: string): Observable<any[]> {
+    // Uso de comillas invertidas `` para las variables
     return this.http.get<any[]>(`${this.apiUsuarios}/buscar-usuarios?nombre=${nombre}`);
   }
 
-  // PASO 2: Busca el SLAM (Va al RespuestaController)
-  // Asegúrate de que en Java el endpoint sea /api/respuestas/buscar-por-nombre
   buscarRespuestasPorAmigo(nombre: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiRespuestas}/buscar-por-nombre?nombre=${nombre}`);
   }
