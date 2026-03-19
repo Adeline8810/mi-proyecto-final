@@ -1,40 +1,62 @@
-import { Component } from '@angular/core'; //
-import { CommonModule } from '@angular/common'; // Para el ngFor
-import { FormsModule } from '@angular/forms'; // 👈 ESTO ES LO QUE FALTA
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { TraduccionService } from '../../../services/traduccion.service';
 
 @Component({
   selector: 'app-buscar-amigo',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './buscar-amigo.html',
   styleUrl: './buscar-amigo.css',
 })
 export class BuscarAmigo {
-
   busquedaNombre: string = '';
-  respuestasAmigo: any[] = [];
+  amigosEncontrados: any[] = []; // Almacena la lista de personas
+  respuestasAmigo: any[] = [];   // Almacena el SLAM del amigo elegido
   cargando: boolean = false;
-  errorBusqueda: string = '';
+  mostrarSlam: boolean = false;  // Controla qué vista mostrar
+
   constructor(private miServicio: TraduccionService) { }
 
-  // Borra "terminoBusqueda" y "respuestas" si no los usas,
-  // usa solo "busquedaNombre" y "respuestasAmigo" para no confundirte.
+  // PASO 1: Buscar coincidencias de nombres/usuarios
+  buscarAmigos() {
+    if (!this.busquedaNombre.trim()) return;
 
-buscarRespuestas() {
-  if (!this.busquedaNombre.trim()) return;
+    this.cargando = true;
+    this.mostrarSlam = false;
+    this.amigosEncontrados = [];
 
-  this.cargando = true;
-  this.miServicio.buscarRespuestasPorAmigo(this.busquedaNombre).subscribe({
-    next: (data) => {
-      this.respuestasAmigo = data; // Aquí llegan las preguntas (rosa) y respuestas (gris)
-      this.cargando = false;
-    },
-    error: (err) => {
-      console.error("Error buscando amigo:", err);
-      this.cargando = false;
-    }
-  });
-}
+    this.miServicio.buscarUsuarios(this.busquedaNombre).subscribe({
+      next: (data) => {
+        this.amigosEncontrados = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error("Error buscando usuarios:", err);
+        this.cargando = false;
+      }
+    });
+  }
 
+  // PASO 2: Cargar el SLAM de la persona seleccionada
+  verSlam(amigo: any) {
+    this.cargando = true;
+    // Usamos el nombre exacto para que no salgan duplicados
+    this.miServicio.buscarRespuestasPorAmigo(amigo.nombre).subscribe({
+      next: (data) => {
+        this.respuestasAmigo = data;
+        this.mostrarSlam = true;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error("Error cargando SLAM:", err);
+        this.cargando = false;
+      }
+    });
+  }
+
+  volverALista() {
+    this.mostrarSlam = false;
+  }
 }

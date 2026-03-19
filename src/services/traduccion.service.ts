@@ -8,30 +8,32 @@ import { map } from 'rxjs/operators';
 })
 export class TraduccionService {
 
-  // Tu URL de Railway
-  private apiTranslate = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas/traducir';
+  // 1. Definimos las URLs base correctamente
+  private apiBase = 'https://backend-cloudv2-production-1443.up.railway.app/api';
 
-  private apiBusqueda = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas/buscar-por-nombre';
+  // Estas son las que causaban error si no estaban bien declaradas:
+  private apiUsuarios = `${this.apiBase}/usuarios`;
+  private apiRespuestas = `${this.apiBase}/respuestas`;
 
   constructor(private http: HttpClient) { }
 
+  // Método de traducción (Ya lo tienes bien, solo aseguro la URL)
   traducir(texto: string, target: string): Observable<string> {
-    // 📦 Creamos el cuerpo que espera el Backend (bodyRequest en Java)
-    const body = {
-      texto: texto,
-      target: target
-    };
-
-    // 🚀 Enviamos por POST y extraemos el campo "traducido" del JSON de respuesta
-    return this.http.post<any>(this.apiTranslate, body).pipe(
+    const body = { texto, target };
+    return this.http.post<any>(`${this.apiRespuestas}/traducir`, body).pipe(
       map(res => res.traducido)
     );
   }
 
-buscarRespuestasPorAmigo(nombre: string): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiBusqueda}?nombre=${nombre}`);
-}
+  // PASO 1: Busca personas (Va al UsuarioController)
+  // Asegúrate de que en Java el endpoint sea /api/usuarios/buscar-usuarios
+  buscarUsuarios(nombre: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUsuarios}/buscar-usuarios?nombre=${nombre}`);
+  }
 
-
-
+  // PASO 2: Busca el SLAM (Va al RespuestaController)
+  // Asegúrate de que en Java el endpoint sea /api/respuestas/buscar-por-nombre
+  buscarRespuestasPorAmigo(nombre: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiRespuestas}/buscar-por-nombre?nombre=${nombre}`);
+  }
 }
