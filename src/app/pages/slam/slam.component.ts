@@ -38,62 +38,60 @@ export class SlamComponent implements OnInit {
     private traduccionService: TraduccionService) {}
 
   ngOnInit(): void {
-    const u = localStorage.getItem('usuario');
-    const fotoGuardada = localStorage.getItem('user_foto_perfil');
-    if (fotoGuardada) {
-    // Si existe, se la asignamos a la variable que muestra la imagen en el HTML
-    this.fotoUrlServidor = fotoGuardada;
-    // Si estás en el formulario del Slam, asígnale la URL a la respuesta actual
-    this.respuestas[this.preguntaActual].fotoUrl = fotoGuardada;
+  const u = localStorage.getItem('usuario');
+  // Eliminamos la lógica de la foto de aquí arriba porque el array está vacío todavía
+
+  if (!u) {
+    alert('Debes iniciar sesión');
+    return;
   }
 
-    if (!u) {
-      alert('Debes iniciar sesión');
-      return;
-    }
+  const usuarioObj = JSON.parse(u);
+  this.usuarioId = usuarioObj.id;
+  this.nombreUsuario = usuarioObj.nombre;
 
-    const usuarioObj = JSON.parse(u);
-    this.usuarioId = usuarioObj.id;
-    this.nombreUsuario = usuarioObj.nombre;
+  // ⚡ Cargar preguntas y respuestas existentes en paralelo
+  forkJoin({
+    preguntas: this.preguntaService.obtenerPreguntas(),
+    respuestas: this.respuestaService.obtenerRespuestasPorUsuario(this.usuarioId)
+  }).subscribe({
+    next: ({ preguntas, respuestas }) => {
+      this.preguntas = preguntas;
 
-    this.usuarioId = JSON.parse(u).id;
+      // Mapear respuestas existentes
+      this.respuestas = preguntas.map(q => {
+        const rExistente = respuestas.find(r => r.preguntaId === q.id);
+        return {
+          id: rExistente?.id,
+          preguntaId: q.id,
+          usuarioId: this.usuarioId,
+          texto: rExistente?.texto || null,
+          fotoUrl: rExistente?.fotoUrl || null
+        };
+      });
 
+      // --- AQUÍ VA EL CAMBIO SEGURO ---
+      if (this.respuestas.length > 0) {
+        this.preguntaActual = 0;
+        this.respuestaActual = this.respuestas[0].texto || '';
 
+        // 1. Prioridad: Foto que viene de la Base de Datos
+        // 2. Si no hay en BD, intentamos la del LocalStorage (caché)
+        const fotoGuardada = localStorage.getItem('user_foto_perfil');
 
-    // ⚡ Cargar preguntas y respuestas existentes en paralelo
-    forkJoin({
-      preguntas: this.preguntaService.obtenerPreguntas(),
-      respuestas: this.respuestaService.obtenerRespuestasPorUsuario(this.usuarioId)
-    }).subscribe({
-      next: ({ preguntas, respuestas }) => {
-        this.preguntas = preguntas;
-
-        // Mapear respuestas existentes
-        this.respuestas = preguntas.map(q => {
-          const rExistente = respuestas.find(r => r.preguntaId === q.id);
-          return {
-            id: rExistente?.id,
-            preguntaId: q.id,
-            usuarioId: this.usuarioId,
-            texto: rExistente?.texto || null,
-            fotoUrl: rExistente?.fotoUrl || null
-          };
-        });
-
-        // Inicializar respuesta actual y previsualización
-        if (this.respuestas.length) {
-          this.preguntaActual = 0;
-          this.respuestaActual = this.respuestas[0].texto || '';
-          this.fotoPreview = this.respuestas[0].fotoUrl || null;
+        if (this.respuestas[0].fotoUrl) {
+          this.fotoUrlServidor = this.respuestas[0].fotoUrl;
+          this.fotoPreview = this.respuestas[0].fotoUrl;
+        } else if (fotoGuardada) {
+          this.fotoUrlServidor = fotoGuardada;
+          this.fotoPreview = fotoGuardada;
+          this.respuestas[0].fotoUrl = fotoGuardada; // Sincronizamos el objeto
         }
-      },
-      error: err => console.error(err)
-    });
-
-
-
-
-  }
+      }
+    },
+    error: err => console.error(err)
+  });
+}
 
   onFotoSeleccionada(ev: any) {
     const f: File = ev.target.files && ev.target.files[0];
