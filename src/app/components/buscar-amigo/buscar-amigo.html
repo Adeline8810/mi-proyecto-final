@@ -26,17 +26,19 @@
   </div>
 
   <div class="resultado-container" *ngIf="mostrarSlam">
+
     <button class="btn-volver" (click)="volverALista()">⬅ Volver a la lista</button>
+    <button class="btn-volver-buscador" (click)="volverAlBuscadorMain()">
+    🔍 Nuevo buscador
+  </button>
 
-   <div class="perfil-header" *ngIf="respuestasAmigo.length > 0 && respuestasAmigo[0].fotoUrl">
-   <img [src]="'https://backend-cloudv2-production-1443.up.railway.app' + respuestasAmigo[0].fotoUrl"
-        class="foto-perfil-amigo"
-        alt="Foto de perfil">
+  <div class="perfil-header" *ngIf="respuestasAmigo.length > 0 && respuestasAmigo[0].fotoUrl">
+  <img [src]="'https://backend-cloudv2-production-1443.up.railway.app' + respuestasAmigo[0].fotoUrl"
+       class="foto-perfil-amigo"
+       alt="Foto de perfil">
 </div>
 
- <div *ngFor="let item of respuestasAmigo" class="card">
-  <p class="pregunta">💖 {{ item.pregunta }}</p>
-  <p class="respuesta">{{ item.respuesta }}</p>
-</div>
+<div *ngFor="let item of respuestasAmigo" class="card">
+  <p class="pregunta">💖 {{ item.pregunta }}</p> <p class="respuesta">{{ item.respuesta }}</p> </div>
   </div>
 </div>
