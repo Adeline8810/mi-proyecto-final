@@ -191,26 +191,36 @@ async guardarTodo() {
 
       // 3. Limpiamos la URL con un "timestamp" para romper la caché del navegador
       const timestamp = new Date().getTime();
-      const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?t=${timestamp}`;
-
+      //const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?t=${timestamp}`;
+const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?v=${new Date().getTime()}`;
       // Sincronizamos
       this.respuestas.forEach(r => r.fotoUrl = urlCompleta);
       this.fotoUrlServidor = urlCompleta;
+      localStorage.setItem('user_foto_perfil', urlCompleta);
+
     }
   } catch (err) {
     console.error('Error al subir foto:', err);
+    alert('Hubo un problema al subir la imagen.');
   }
 
   // Guardar el resto de respuestas
-  this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
-    next: () => {
-      this.completado = true;
-      if (this.fotoUrlServidor) {
-        localStorage.setItem('user_foto_perfil', this.fotoUrlServidor);
-      }
-    },
-    error: err => alert('Error al guardar respuestas')
-  });
+ this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
+  next: () => {
+    this.completado = true;
+
+    // Si subimos una foto, la guardamos en el localStorage para que
+    // al refrescar el perfil se vea la nueva y no la de Ruth
+    if (this.fotoUrlServidor) {
+      localStorage.setItem('user_foto_perfil', this.fotoUrlServidor);
+      console.log('Foto actualizada en storage:', this.fotoUrlServidor);
+    }
+  },
+  error: err => {
+    console.error(err);
+    alert('Error al guardar respuestas');
+  }
+});
 }
 
 
