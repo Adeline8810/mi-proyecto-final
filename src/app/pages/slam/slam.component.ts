@@ -39,6 +39,7 @@ export class SlamComponent implements OnInit {
 
   ngOnInit(): void {
   const u = localStorage.getItem('usuario');
+  this.fotoUrlServidor = localStorage.getItem('user_foto_perfil') || 'assets/img/default.png';
   // Eliminamos la lógica de la foto de aquí arriba porque el array está vacío todavía
 
   if (!u) {
@@ -77,16 +78,20 @@ export class SlamComponent implements OnInit {
 
         // 1. Prioridad: Foto que viene de la Base de Datos
         // 2. Si no hay en BD, intentamos la del LocalStorage (caché)
+        const baseApi = 'https://backend-cloudv2-production-1443.up.railway.app';
         const fotoGuardada = localStorage.getItem('user_foto_perfil');
 
-        if (this.respuestas[0].fotoUrl) {
-          this.fotoUrlServidor = this.respuestas[0].fotoUrl;
-          this.fotoPreview = this.respuestas[0].fotoUrl;
-        } else if (fotoGuardada) {
-          this.fotoUrlServidor = fotoGuardada;
-          this.fotoPreview = fotoGuardada;
-          this.respuestas[0].fotoUrl = fotoGuardada; // Sincronizamos el objeto
-        }
+       if (this.respuestas[0]?.fotoUrl) {
+    const urlBD = this.respuestas[0].fotoUrl;
+    // Si la URL de la BD ya es completa (empieza con http), la usamos tal cual
+    // Si es solo "/uploads/...", le sumamos la baseApi
+    this.fotoUrlServidor = urlBD.startsWith('http') ? urlBD : `${baseApi}${urlBD}`;
+    this.fotoPreview = this.fotoUrlServidor;
+}
+else if (fotoGuardada) {
+    this.fotoUrlServidor = fotoGuardada.startsWith('http') ? fotoGuardada : `${baseApi}${fotoGuardada}`;
+    this.fotoPreview = this.fotoUrlServidor;
+}
       }
     },
     error: err => console.error(err)
