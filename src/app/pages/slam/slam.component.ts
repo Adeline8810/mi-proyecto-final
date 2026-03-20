@@ -184,7 +184,7 @@ async guardarTodo() {
   try {
     if (this.fotoFile) {
       // 1. Obtenemos el ID del usuario logueado (importante para que el backend sepa de quién es la foto)
-      const usuarioId = localStorage.getItem('usuarioId') || '';
+      const usuarioId = localStorage.getItem('usuarioId') || '1';
 
       // 2. Subimos la foto pasando el ID
       const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile, usuarioId));
@@ -192,7 +192,7 @@ async guardarTodo() {
       // 3. Limpiamos la URL con un "timestamp" para romper la caché del navegador
       const timestamp = new Date().getTime();
       //const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?t=${timestamp}`;
-const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?v=${new Date().getTime()}`;
+      const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?v=${new Date().getTime()}`;
       // Sincronizamos
       this.respuestas.forEach(r => r.fotoUrl = urlCompleta);
       this.fotoUrlServidor = urlCompleta;
