@@ -189,7 +189,7 @@ async guardarTodo() {
   try {
     if (this.fotoFile) {
       // 1. Obtenemos el ID del usuario logueado (importante para que el backend sepa de quién es la foto)
-      const usuarioId = localStorage.getItem('usuarioId') || '1';
+      const usuarioId = localStorage.getItem('usuarioId') || '';
 
       // 2. Subimos la foto pasando el ID
       const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile, usuarioId));
