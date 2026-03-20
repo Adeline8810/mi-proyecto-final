@@ -1,4 +1,4 @@
-  import { Injectable } from '@angular/core';
+  import { Injectable,EventEmitter } from '@angular/core';
   import { HttpClient } from '@angular/common/http';
   import { Respuesta } from '../models/respuesta';
   import { Observable } from 'rxjs';
@@ -6,20 +6,27 @@
   @Injectable({ providedIn: 'root' })
   export class RespuestaService {
     //private api = 'http://localhost:8080/api/respuestas';
-      private api = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas';
+      private api = 'http://localhost:8080/api/respuestas';
 
     constructor(private http: HttpClient) {}
 
-  subirFoto(file: File,usuarioId: string): Observable<string> {
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('usuarioId', usuarioId);
+   reiniciarSlam$ = new EventEmitter<void>();
 
-  return this.http.post(`${this.api}/upload`, fd, {
-    responseType: 'text' as 'text'
-  });
-
+   dispararReinicio() {
+   this.reiniciarSlam$.emit();
   }
+
+
+ subirFoto(file: File, usuarioId: string): Observable<string> {
+  const formData = new FormData();
+  // El nombre 'file' debe coincidir exactamente con @RequestParam("file") en Java
+  formData.append('file', file);
+  formData.append('usuarioId', usuarioId);
+
+  return this.http.post('http://localhost:8080/api/respuestas/upload', formData, {
+    responseType: 'text' // Importante porque Java devuelve un String, no un JSON
+  });
+}
 
   actualizarRespuestas(respuestas: Respuesta[]): Observable<Respuesta[]> {
     return this.http.post<Respuesta[]>('http://localhost:8080/api/respuestas/actualizar', respuestas);
@@ -35,6 +42,7 @@
     // Al enviar la lista a la raíz del API, el nuevo Java inteligente hará el resto
     return this.http.post<Respuesta[]>(this.api, respuestas);
   }
+
 
 
 

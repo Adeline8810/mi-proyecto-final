@@ -9,11 +9,11 @@ import { map } from 'rxjs/operators';
 export class TraduccionService {
 
   // 1. Definimos las URLs base correctamente
-  private apiBase = 'https://backend-cloudv2-production-1443.up.railway.app/api';
+  private apiBase = 'http://localhost:8080/api';
 
   // Estas son las que causaban error si no estaban bien declaradas:
-  private apiUsuarios = 'https://backend-cloudv2-production-1443.up.railway.app/api/usuarios';
-  private apiRespuestas = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas';
+  private apiUsuarios = 'http://localhost:8080/api/usuarios';
+  private apiRespuestas = 'http://localhost:8080/api/respuestas';
 
   constructor(private http: HttpClient) { }
 
