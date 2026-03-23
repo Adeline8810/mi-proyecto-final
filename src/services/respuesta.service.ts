@@ -6,7 +6,7 @@
   @Injectable({ providedIn: 'root' })
   export class RespuestaService {
 
-     private api = 'https://backend-adeline-slam.onrender.com/api/respuestas';
+     private api = 'https://backend-ruth-slam.onrender.com/api/respuestas';
     constructor(private http: HttpClient) {}
 
   subirFoto(file: File,usuarioId: string): Observable<string> {
@@ -22,7 +22,7 @@
 
   actualizarRespuestas(respuestas: Respuesta[]): Observable<Respuesta[]> {
   //  return this.http.post<Respuesta[]>('http://localhost:8080/api/respuestas/actualizar', respuestas);
-  return this.http.post<Respuesta[]>('https://backend-adeline-slam.onrender.com/api/respuestas/actualizar', respuestas);
+  return this.http.post<Respuesta[]>('https://backend-ruth-slam.onrender.com/api/respuestas/actualizar', respuestas);
 
 }
 

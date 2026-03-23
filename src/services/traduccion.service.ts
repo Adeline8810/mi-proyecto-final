@@ -10,11 +10,11 @@ export class TraduccionService {
 
   // 1. Definimos las URLs base correctamente
 
-  private apiBase = 'https://backend-adeline-slam.onrender.com/api';
+  private apiBase = 'https://backend-ruth-slam.onrender.com/api';
 
-   apiUsuarios = 'https://backend-adeline-slam.onrender.com/api/usuarios';
+   apiUsuarios = 'https://backend-ruth-slam.onrender.com/api/usuarios';
 
-  private apiRespuestas = 'https://backend-adeline-slam.onrender.com/api/respuestas';
+  private apiRespuestas = 'https://backend-ruth-slam.onrender.com/api/respuestas';
 
   constructor(private http: HttpClient) { }
 

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class PreguntaService {
 
-private api = 'https://backend-adeline-slam.onrender.com/api/preguntas';
+private api = 'https://backend-ruth-slam.onrender.com/api/preguntas';
   constructor(private http: HttpClient) {}
 
   obtenerPreguntas(): Observable<Pregunta[]> {
