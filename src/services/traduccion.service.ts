@@ -9,12 +9,11 @@ import { map } from 'rxjs/operators';
 export class TraduccionService {
 
   // 1. Definimos las URLs base correctamente
-  //private apiBase = 'https://backend-cloudv2-production-1443.up.railway.app/api';
+
   private apiBase = 'https://backend-adeline-slam.onrender.com/api';
-  // Estas son las que causaban error si no estaban bien declaradas:
-  // apiUsuarios = 'https://backend-cloudv2-production-1443.up.railway.app/api/usuarios';
+
    apiUsuarios = 'https://backend-adeline-slam.onrender.com/api/usuarios';
-  //private apiRespuestas = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas';
+
   private apiRespuestas = 'https://backend-adeline-slam.onrender.com/api/respuestas';
 
   constructor(private http: HttpClient) { }

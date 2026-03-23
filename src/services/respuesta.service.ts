@@ -5,8 +5,7 @@
 
   @Injectable({ providedIn: 'root' })
   export class RespuestaService {
-    //private api = 'http://localhost:8080/api/respuestas';
-     // private api = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas';
+
      private api = 'https://backend-adeline-slam.onrender.com/api/respuestas';
     constructor(private http: HttpClient) {}
 

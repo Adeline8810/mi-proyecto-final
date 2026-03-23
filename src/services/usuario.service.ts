@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
   // 1. Limpiamos la URL para que sea solo la base de usuarios
- // private api = 'https://backend-cloudv2-production-1443.up.railway.app/api/usuarios';
+
  private api = 'https://backend-adeline-slam.onrender.com/api/usuarios';
 
   constructor(private http: HttpClient) {}

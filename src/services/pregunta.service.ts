@@ -5,8 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PreguntaService {
-  //private api = 'http://localhost:8080/api/preguntas';
-//private api = 'https://backend-cloudv2-production-1443.up.railway.app/api/preguntas';
+
 private api = 'https://backend-adeline-slam.onrender.com/api/preguntas';
   constructor(private http: HttpClient) {}
 
