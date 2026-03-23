@@ -6,8 +6,8 @@
   @Injectable({ providedIn: 'root' })
   export class RespuestaService {
     //private api = 'http://localhost:8080/api/respuestas';
-      private api = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas';
-
+     // private api = 'https://backend-cloudv2-production-1443.up.railway.app/api/respuestas';
+     private api = 'https://backend-adeline-slam.onrender.com/api/respuestas';
     constructor(private http: HttpClient) {}
 
   subirFoto(file: File,usuarioId: string): Observable<string> {
@@ -22,8 +22,10 @@
   }
 
   actualizarRespuestas(respuestas: Respuesta[]): Observable<Respuesta[]> {
-    return this.http.post<Respuesta[]>('http://localhost:8080/api/respuestas/actualizar', respuestas);
-  }
+  //  return this.http.post<Respuesta[]>('http://localhost:8080/api/respuestas/actualizar', respuestas);
+  return this.http.post<Respuesta[]>('https://backend-adeline-slam.onrender.com/api/respuestas/actualizar', respuestas);
+
+}
 
     obtenerRespuestasPorUsuario(usuarioId: number): Observable<Respuesta[]> {
       return this.http.get<Respuesta[]>(`${this.api}/usuario/${usuarioId}`);
