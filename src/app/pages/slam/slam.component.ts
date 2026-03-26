@@ -78,7 +78,8 @@ export class SlamComponent implements OnInit {
 
         // 1. Prioridad: Foto que viene de la Base de Datos
         // 2. Si no hay en BD, intentamos la del LocalStorage (caché)
-        const baseApi = 'https://backend-cloudv2-production-1443.up.railway.app';
+        const baseApi = 'https://backend-ruth-slam.onrender.com';
+
         const fotoGuardada = localStorage.getItem('user_foto_perfil');
 
        if (this.respuestas[0]?.fotoUrl) {
@@ -196,8 +197,9 @@ async guardarTodo() {
 
       // 3. Limpiamos la URL con un "timestamp" para romper la caché del navegador
       const timestamp = new Date().getTime();
-      //const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?t=${timestamp}`;
-      const urlCompleta = `https://backend-cloudv2-production-1443.up.railway.app${pathRelativo}?v=${new Date().getTime()}`;
+
+      const urlCompleta = `https://backend-ruth-slam.onrender.com${pathRelativo}?v=${new Date().getTime()}`;
+
       // Sincronizamos
       this.respuestas.forEach(r => r.fotoUrl = urlCompleta);
       this.fotoUrlServidor = urlCompleta;
@@ -265,12 +267,12 @@ obtenerTraduccionActual() {
       if (!this.preguntasTraducidas[lang]) {
         this.preguntasTraducidas[lang] = {};
       }
-      // Guardamos la respuesta (res es el string que viene de Railway)
+      // Guardamos la respuesta
       this.preguntasTraducidas[lang][idPregunta] = res;
       this.cargando = false;
     },
     error: (err) => {
-      console.error('Error en Railway:', err);
+      console.error('Error en RENDER:', err);
       this.cargando = false;
     }
   });
